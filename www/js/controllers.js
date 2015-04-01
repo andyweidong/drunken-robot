@@ -2,6 +2,9 @@ angular.module('starter.controllers', [])
 
 .controller('BbssCtrl', function($scope, Bbss) {
     $scope.bbss = Bbss.all();
+    $scope.remove = function(bbs){
+        Bbss.remove(bbs);
+    };
 })
 
 .controller('BbsDetailCtrl', function($scope, $stateParams, Bbss) {
