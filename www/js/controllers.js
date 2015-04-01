@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('drunken.controllers', [])
 
 .controller('BbssCtrl', function($scope, Bbss) {
     $scope.bbss = Bbss.all();
