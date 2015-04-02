@@ -1,5 +1,5 @@
 
-angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services'])
+angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
