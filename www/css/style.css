@@ -11,11 +11,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 	height: 47px;
 	line-height: 20px;
 }
-
+textarea {
+	resize: none;
+}
 input.input-radius {
 	border-radius: 3px;
 }
-
 
 .login-explain {
 	text-align: center;
@@ -23,4 +24,8 @@ input.input-radius {
 .login-explain a {
 	text-decoration: none;
 	color: #ff6599;
+}
+.textarea-create-bbs {
+	height: 300px;
+	border:none;
 }

@@ -72,6 +72,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     url: '/bbs/:bbsId',
     templateUrl: 'templates/bbs-detail.html',
     controller: 'BbsDetailCtrl'
+  })
+
+  .state('createBbs', {
+    url: '/createBbs',
+    templateUrl: 'templates/create-bbs.html',
+    controller: 'CreateBbsCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback

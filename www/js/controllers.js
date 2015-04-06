@@ -114,4 +114,10 @@ angular.module('drunken.controllers', [])
 		return ($scope.user.phone > 1999999999 && $scope.user.phone < 19999999999);
 	}
 
+}])
+
+.controller('CreateBbsCtrl', ['$scope', 'Bbss', function($scope, Bbss){
+	$scope.sendBbs = function(){
+		Bbss.create($scope.bbs);
+	};
 }]);
