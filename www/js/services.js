@@ -1,5 +1,70 @@
 angular.module('drunken.services', [])
 
+.factory('user', [function(){
+
+  var cache = {
+    username: 'oxoxll',
+    avatar: 'http://ionicframework.com/img/docs/mcfly.jpg'
+  };
+
+  return {
+    isLogin: isLogin,
+    set: set,
+    get: get,
+    exit: exit
+  };
+
+  function isLogin(){
+    return true;
+    return cache['isLogin'] === 'true' ? true : false;
+  }
+
+  function set(key, value){
+    cache[key] = value;
+    return;
+    localStorage.setItem(key, value);
+    return this;
+  }
+
+  function get(key){
+    return cache[key];
+    return localStorage.getItem(key);
+  }
+
+  function exit(){
+    set('isLogin', 'false');
+  }
+
+}])
+
+.factory('LoginService', ['$q', function($q){
+  return {
+    sendCode: sendCode,
+    login: login
+  }
+
+  function sendCode(phone){
+    return $q(function(resolve, reject){
+      setTimeout(function(){
+        resolve('发送成功');
+      }, 1000);
+    });
+  }
+
+  function login(){
+    return $q(function(resolve, reject){
+      setTimeout(function(){
+        resolve({
+          userId: 100,
+          username: 'haha',
+          avatar: 'http://ionicframework.com/img/docs/mcfly.jpg'
+        });
+      }, 1000);
+    });
+  }
+
+}])
+
 .factory('Bbss', function() {
 
   var bbss = [{
