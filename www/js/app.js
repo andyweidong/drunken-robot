@@ -41,15 +41,6 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
-  .state('tab.bbs-detail', {
-    url: '/bbs/:bbsId',
-    views: {
-      'tab-bbss': {
-        templateUrl: 'templates/bbs-detail.html',
-        controller: 'BbsDetailCtrl'
-      }
-    }
-  })
   .state('tab.location', {
       url: '/location',
       views: {
@@ -69,6 +60,18 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
         controller: 'AccountCtrl'
       }
     }
+  })
+  //login
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+
+  .state('bbs-detail', {
+    url: '/bbs/:bbsId',
+    templateUrl: 'templates/bbs-detail.html',
+    controller: 'BbsDetailCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback
