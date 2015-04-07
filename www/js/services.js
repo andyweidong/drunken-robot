@@ -65,7 +65,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('Bbss', function() {
+.factory('Bbss', ['$q', function($q) {
 
   var bbss = [{
     id: 0,
@@ -127,7 +127,13 @@ angular.module('drunken.services', [])
       return null;
     },
     create: function(title){
-
+      return $q(function(resolve, reject){
+        setTimeout(function(){
+          resolve('创建成功');
+        }, 1000);
+      });
     }
   };
-});
+}])
+
+;

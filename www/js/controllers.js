@@ -5,8 +5,11 @@ angular.module('drunken.controllers', [])
     console.log('BbssCtrl');
 }])
 
-.controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', function($scope, $stateParams, Bbss) {
+.controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', '$state', function($scope, $stateParams, Bbss, $state) {
   $scope.bbs = Bbss.get($stateParams.bbsId);
+  $scope.back = function(){
+  	$state.go('tab.bbss');
+  };
   console.log('BbsDetailCtrl');
 }])
 
@@ -75,6 +78,7 @@ angular.module('drunken.controllers', [])
 	    LoginService.login().then(function(userInfo){
 	    	$ionicLoading.hide();
 	    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
+	    	$scope.user.code = '';
 	    	user.set('username', userInfo.username);
 	    	user.set('avatar', userInfo.avatar);
 	    	user.set('isLogin', 'true');
@@ -116,9 +120,20 @@ angular.module('drunken.controllers', [])
 
 }])
 
-.controller('CreateBbsCtrl', ['$scope', 'Bbss', function($scope, Bbss){
+.controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', '$ionicViewService', function($scope, Bbss, $ionicLoading, $state, $ionicViewService){
 	$scope.sendBbs = function(){
-		Bbss.create($scope.bbs);
+		$ionicLoading.show({
+			template: '正在创建...'
+		});
+		Bbss.create($scope.bbs).then(function(){
+			$ionicLoading.hide();
+			$ionicLoading.show({ template: '创建成功!', noBackdrop: true, duration: 2000 });
+			$scope.bbs = '';
+			$ionicViewService.nextViewOptions({
+			  disableBack: true
+			});
+			$state.go('bbs-detail', {bbsId: 0});
+		});
 	};
 }])
 
