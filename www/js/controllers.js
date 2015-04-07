@@ -38,15 +38,11 @@ angular.module('drunken.controllers', [])
 .controller('LoginCtrl', ['$scope', '$interval', '$ionicLoading', 'LoginService', '$ionicHistory', '$rootScope', 'user', function($scope, $interval, $ionicLoading, LoginService, $ionicHistory, $rootScope, user){
 	console.log('LoginCtrl');
 	var time = 60;
-	$scope.codeDisable = true;
-	$scope.loginDisable = true;
+	$scope.codeDisable = false;
 	$scope.codeBtnText = '获取验证码';
 	$scope.user = {};
 
-
 	$scope.sendCode = function(){
-		
-
 		$scope.codeDisable = true;
 		$scope.codeBtnText = time + '秒';
 		time--;
@@ -57,7 +53,7 @@ angular.module('drunken.controllers', [])
 				$interval.cancel(intervalId);
 				$scope.codeBtnText = '获取验证码';
 				time = 60;
-				validateCodeDisable();
+				$scope.codeDisable = false;
 			}
 		}, 1000);
 		$ionicLoading.show({
@@ -75,6 +71,7 @@ angular.module('drunken.controllers', [])
 		$ionicLoading.show({
 	      template: '正在登录...'
 	    });
+	    console.log($scope.user);
 	    LoginService.login().then(function(userInfo){
 	    	$ionicLoading.hide();
 	    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
@@ -89,34 +86,6 @@ angular.module('drunken.controllers', [])
 			$ionicLoading.show({ template: '登录失败!', noBackdrop: true, duration: 2000 });
 	    });
 	};
-	$scope.changePhone = function(){
-		validateCodeDisable();
-		validateLoginDisable();
-	};
-
-	$scope.changeCode = function(){
-		validateLoginDisable();
-	}
-
-	function validateLoginDisable(){
-		if(validatePhone() && $scope.user.code >10){
-			$scope.loginDisable = false;
-		}else {
-			$scope.loginDisable = true;
-		}
-	}
-
-	function validateCodeDisable(){
-		if(validatePhone() && time === 60){
-			$scope.codeDisable = false;
-		}else {
-			$scope.codeDisable = true;
-		}
-	}
-
-	function validatePhone(){
-		return ($scope.user.phone > 1999999999 && $scope.user.phone < 19999999999);
-	}
 
 }])
 

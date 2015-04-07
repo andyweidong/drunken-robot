@@ -4,30 +4,34 @@
   </ion-nav-buttons>
   <ion-content class="padding gray-bg">
     <div class="list">
-      <!-- <form name="form" novalidate> -->
+      <form name="form" novalidate>
         <div class="row">
           <div class="col col-67">
-            <input type="number" placeholder="手机号" class="input-radius" ng-model="user.phone" ng-change="changePhone()" />
+            <input type="number" placeholder="手机号" class="input-radius" ng-model="user.phone" name="nPhone" phone>
           </div>
           <div class="col ">
-            <button class="button button-positive button-block" style="margin:0;padding:0;" ng-disabled="codeDisable"  ng-bind="codeBtnText" on-tap="sendCode()"></button>
+            <button class="button button-positive button-block" style="margin:0;padding:0;" ng-disabled="form.nPhone.$error.phone || codeDisable"  ng-bind="codeBtnText" on-tap="sendCode()"></button>
           </div>
 
         </div>
         <div class="row">
           <div class="col">
-            <input type="number" placeholder="验证码" class="input-radius" ng-model="user.code" ng-change="changeCode()">
+            <input type="number" placeholder="验证码" class="input-radius" ng-model="user.code" name="nCode" code>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <button class="button button-block button-positive" ng-disabled="loginDisable" on-tap="login()">登录</button>
+            <button class="button button-block button-positive" ng-disabled="!(!form.nPhone.$error.phone && !form.nCode.$error.code)" on-tap="login()">登录</button>
           </div>
         </div>
         <div class="login-explain">
           点击“登录”，即表示你同意<a href="javascript:;">《相片说免责声明》</a>
         </div>
-      <!-- </form> -->
+        <div ng-show="form.nCode.$error.code">
+          hahahahah
+        </div>
+      </form>
     </div>
+
   </ion-content>
 </ion-view>
