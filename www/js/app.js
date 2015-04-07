@@ -42,15 +42,23 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     }
   })
   .state('tab.location', {
-      url: '/location',
-      views: {
-        'tab-location': {
-          templateUrl: 'templates/tab-location.html',
-          controller: 'LocationCtrl'
-        }
+    url: '/location',
+    views: {
+      'tab-location': {
+        templateUrl: 'templates/tab-location.html',
+        controller: 'LocationCtrl'
       }
-    })
-
+    }
+  })
+  .state('tab.cameramans', {
+    url: '/cameramans',
+    views: {
+      'tab-location': {
+        templateUrl: 'templates/tab-cameramans.html',
+        controller: 'CameramansCtrl'
+      }
+    }
+  })
 
   .state('tab.account', {
     url: '/account',
@@ -78,7 +86,21 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     url: '/createBbs',
     templateUrl: 'templates/create-bbs.html',
     controller: 'CreateBbsCtrl'
-  });
+  })
+
+  .state('cameraman-detail', {
+    url: '/cameraman/:cameramanId',
+    templateUrl: 'templates/cameraman-detail.html',
+    controller: 'CameramanDetailCtrl'
+  })
+
+  .state('chat', {
+    url: '/chat',
+    templateUrl: 'templates/chat.html',
+    controller: 'ChatCtrl'
+  })
+
+  ;
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/bbss');

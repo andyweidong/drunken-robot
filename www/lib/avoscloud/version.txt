@@ -1,0 +1,1 @@
+avos-javascript-sdk-0.5.1

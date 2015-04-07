@@ -120,4 +120,18 @@ angular.module('drunken.controllers', [])
 	$scope.sendBbs = function(){
 		Bbss.create($scope.bbs);
 	};
-}]);
+}])
+
+.controller('CameramansCtrl', ['$scope', function($scope){
+
+}])
+
+.controller('CameramanDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams){
+
+}])
+
+.controller('ChatCtrl', ['$scope'], function($scope) {
+	
+})
+
+;
