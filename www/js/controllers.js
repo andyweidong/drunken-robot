@@ -10,6 +10,9 @@ angular.module('drunken.controllers', [])
   $scope.back = function(){
   	$state.go('tab.bbss');
   };
+  $scope.like = function(id){
+  	
+  }
   console.log('BbsDetailCtrl');
 }])
 
