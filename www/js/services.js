@@ -2,11 +2,6 @@ angular.module('drunken.services', [])
 
 .factory('user', [function(){
 
-  var cache = {
-    username: 'oxoxll',
-    avatar: 'http://ionicframework.com/img/docs/mcfly.jpg'
-  };
-
   return {
     isLogin: isLogin,
     set: set,
@@ -15,19 +10,17 @@ angular.module('drunken.services', [])
   };
 
   function isLogin(){
-    return true;
-    return cache['isLogin'] === 'true' ? true : false;
+    return get('isLogin') === 'true' ? true : false;
   }
 
   function set(key, value){
-    cache[key] = value;
-    return;
     localStorage.setItem(key, value);
     return this;
   }
 
   function get(key){
-    return cache[key];
+    
+    console.log(key + ':' + localStorage.getItem(key));
     return localStorage.getItem(key);
   }
 

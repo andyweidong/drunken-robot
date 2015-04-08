@@ -34,6 +34,7 @@ angular.module('drunken.controllers', [])
   };
 
   function initUserInfo(){
+  	console.log(user.isLogin());
   	$scope.username = user.get('username');
   	$scope.avatar = user.get('avatar');
   	console.log($scope.avatar);
@@ -64,7 +65,7 @@ angular.module('drunken.controllers', [])
 			}
 		}, 1000);
 		$ionicLoading.show({
-	      template: '正在发送...'
+	      template: '<i class="icon ion-load-c padding"></i>正在发送...'
 	    });
 		LoginService.sendCode(15121035541).then(function(){
 			$ionicLoading.hide();
@@ -76,7 +77,7 @@ angular.module('drunken.controllers', [])
 	};
 	$scope.login = function(){
 		$ionicLoading.show({
-	      template: '正在登录...'
+	      template: '<i class="icon ion-load-c padding"></i>正在登录...'
 	    });
 	    console.log($scope.user);
 	    LoginService.login().then(function(userInfo){
@@ -86,7 +87,7 @@ angular.module('drunken.controllers', [])
 	    	user.set('username', userInfo.username);
 	    	user.set('avatar', userInfo.avatar);
 	    	user.set('isLogin', 'true');
-	    	$rootScope.$broadcast('user.login', 'dds');
+	    	$rootScope.$broadcast('user.login');
 	    	$ionicHistory.goBack();
 	    }, function(){
 	    	$ionicLoading.hide();
@@ -99,9 +100,8 @@ angular.module('drunken.controllers', [])
 .controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', function($scope, Bbss, $ionicLoading, $state){
 	$scope.sendBbs = function(){
 		$ionicLoading.show({
-			template: '<i class="icon ion-load-c"></i>正在发送...'
+			template: '<i class="icon ion-load-c padding"></i>正在发送...'
 		});
-        return;
 		Bbss.create($scope.bbs).then(function(){
 			$ionicLoading.hide();
 			$ionicLoading.show({ template: '成功!', noBackdrop: true, duration: 2000 });
