@@ -99,11 +99,12 @@ angular.module('drunken.controllers', [])
 .controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', function($scope, Bbss, $ionicLoading, $state){
 	$scope.sendBbs = function(){
 		$ionicLoading.show({
-			template: '正在创建...'
+			template: '<i class="icon ion-load-c"></i>正在发送...'
 		});
+        return;
 		Bbss.create($scope.bbs).then(function(){
 			$ionicLoading.hide();
-			$ionicLoading.show({ template: '创建成功!', noBackdrop: true, duration: 2000 });
+			$ionicLoading.show({ template: '成功!', noBackdrop: true, duration: 2000 });
 			$scope.bbs = '';
 			$state.go('bbs-detail', {bbsId: 0});
 		});
