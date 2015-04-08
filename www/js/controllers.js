@@ -1,7 +1,13 @@
 angular.module('drunken.controllers', [])
 
-.controller('BbssCtrl', ['$scope', 'Bbss', function($scope, Bbss) {
+.controller('BbssCtrl', ['$scope', 'Bbss', '$ionicLoading', function($scope, Bbss, $ionicLoading) {
     $scope.bbss = Bbss.all();
+    $scope.doRefresh = function(){
+    	setTimeout(function(){
+    		$scope.$broadcast('scroll.refreshComplete');
+    		$ionicLoading.show({ template: '45个更新!', noBackdrop: true, duration: 1000 });
+    	}, 2000);
+    };
     console.log('BbssCtrl');
 }])
 
