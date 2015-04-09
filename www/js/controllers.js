@@ -73,12 +73,12 @@ angular.module('drunken.controllers', [])
 		$ionicLoading.show({
 	      template: '<i class="icon ion-load-c padding"></i>正在发送...'
 	    });
-		LoginService.sendCode(15121035541).then(function(){
+		LoginService.sendCode(15121035541).then(function(msg){
 			$ionicLoading.hide();
-			$ionicLoading.show({ template: '发送成功!', noBackdrop: true, duration: 2000 });
-		}, function(){
+			$ionicLoading.show({ template: msg, noBackdrop: true, duration: 2000 });
+		}, function(err){
 			$ionicLoading.hide();
-			$ionicLoading.show({ template: '发送失败!', noBackdrop: true, duration: 2000 });
+			$ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
 		});
 	};
 	$scope.login = function(){
@@ -86,7 +86,7 @@ angular.module('drunken.controllers', [])
 	      template: '<i class="icon ion-load-c padding"></i>正在登录...'
 	    });
 	    console.log($scope.user);
-	    LoginService.login().then(function(userInfo){
+	    LoginService.login($scope.user.phone, $scope.user.code).then(function(userInfo){
 	    	$ionicLoading.hide();
 	    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
 	    	$scope.user.code = '';
