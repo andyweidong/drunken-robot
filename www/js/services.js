@@ -30,7 +30,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('LoginService', ['$q', function($q){
+.factory('LoginService', ['$q', '$ionicLoading' function($q, $ionicLoading){
 
   var type = 'login';
 
@@ -43,10 +43,8 @@ angular.module('drunken.services', [])
     return $q(function(resolve, reject){
       AV.User.requestLoginSmsCode(phone + '').then(function(){
         type = 'login';
-        console.log('send success.');
         resolve('发送成功!');
       }, function(err){
-        console.log('send err:' + err);
         type = 'regist';
         if(err.code === 213){//未注册
           regist(phone, resolve, reject);
@@ -56,10 +54,14 @@ angular.module('drunken.services', [])
             resolve('发送成功!');
           }, function(err){
             //发送失败
-            reject(err);
+            //reject(err);
+            $ionicLoading.hide();
+            $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
           });
         }else {
-          reject(err);
+          //reject(err);
+          $ionicLoading.hide();
+          $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
         }
       });
     });
@@ -76,8 +78,9 @@ angular.module('drunken.services', [])
         resolve('发送成功!');
       },
       error: function(user, error) {
-        console.log("Error: " + error.code + " " + error.message);
-        reject(error);
+        //reject(error);
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
       }
     });
   }
@@ -87,7 +90,8 @@ angular.module('drunken.services', [])
       AV.User.verifyMobilePhone(code + '').then(function(){
         resolve(AV.user.current());
       }, function(err){
-        reject(err);
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
       });
     });
 
@@ -99,11 +103,10 @@ angular.module('drunken.services', [])
     }
     return $q(function(resolve, reject){
       AV.User.logInWithMobilePhoneSmsCode(phone + '', code + '').then(function(user){
-        console.log('login success:' + user);
         resolve(user);
       }, function(err){
-        console.log('login err:' + err);
-        reject(err);
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
       });
     });
   }

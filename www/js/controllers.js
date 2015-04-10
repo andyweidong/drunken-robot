@@ -1,5 +1,6 @@
 angular.module('drunken.controllers', [])
 
+
 .controller('BbssCtrl', ['$scope', 'Bbss', '$ionicLoading', function($scope, Bbss, $ionicLoading) {
     $scope.bbss = Bbss.all();
     $scope.doRefresh = function(){
@@ -10,6 +11,7 @@ angular.module('drunken.controllers', [])
     };
     console.log('BbssCtrl');
 }])
+
 
 .controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', '$state', '$ionicPlatform', function($scope, $stateParams, Bbss, $state, $ionicPlatform) {
   $scope.bbs = Bbss.get($stateParams.bbsId);
@@ -22,23 +24,20 @@ angular.module('drunken.controllers', [])
   $ionicPlatform.registerBackButtonAction(function() {
      $scope.back();
   }, 100);
-
-  console.log('BbsDetailCtrl');
 }])
+
 
 .controller('LocationCtrl', ['$scope', function($scope) {
-	console.log('LocationCtrl');
+  
 }])
 
-.controller('AccountCtrl', ['$scope', '$rootScope', 'user', function($scope, $rootScope, user) {
-  
-  $rootScope.$on('user.login', initUserInfo);
 
+.controller('AccountCtrl', ['$scope', '$rootScope', 'user', function($scope, $rootScope, user) {
+  $rootScope.$on('user.login', initUserInfo);
   $scope.exit = function(){
   	user.exit();
   	initUserInfo();
   };
-
   function initUserInfo(){
   	console.log(user.isLogin());
   	$scope.username = user.get('username');
@@ -49,8 +48,8 @@ angular.module('drunken.controllers', [])
   initUserInfo();
 }])
 
+
 .controller('LoginCtrl', ['$scope', '$interval', '$ionicLoading', 'LoginService', '$ionicHistory', '$rootScope', 'user', function($scope, $interval, $ionicLoading, LoginService, $ionicHistory, $rootScope, user){
-	console.log('LoginCtrl');
 	var time = 60;
 	$scope.codeDisable = false;
 	$scope.codeBtnText = '获取验证码';
@@ -73,35 +72,28 @@ angular.module('drunken.controllers', [])
 		$ionicLoading.show({
 	      template: '<i class="icon ion-load-c padding"></i>正在发送...'
 	    });
-		LoginService.sendCode(15121035541).then(function(msg){
+		LoginService.sendCode($scope.user.phone).then(function(msg){
 			$ionicLoading.hide();
 			$ionicLoading.show({ template: msg, noBackdrop: true, duration: 2000 });
-		}, function(err){
-			$ionicLoading.hide();
-			$ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
 		});
 	};
 	$scope.login = function(){
 		$ionicLoading.show({
-	      template: '<i class="icon ion-load-c padding"></i>正在登录...'
-	    });
-	    console.log($scope.user);
-	    LoginService.login($scope.user.phone, $scope.user.code).then(function(userInfo){
-	    	$ionicLoading.hide();
-	    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
-	    	$scope.user.code = '';
-	    	user.set('username', userInfo.username);
-	    	user.set('avatar', userInfo.avatar);
-	    	user.set('isLogin', 'true');
-	    	$rootScope.$broadcast('user.login');
-	    	$ionicHistory.goBack();
-	    }, function(){
-	    	$ionicLoading.hide();
-			$ionicLoading.show({ template: '登录失败!', noBackdrop: true, duration: 2000 });
-	    });
+      template: '<i class="icon ion-load-c padding"></i>正在登录...'
+    });
+    LoginService.login($scope.user.phone, $scope.user.code).then(function(userInfo){
+    	$ionicLoading.hide();
+    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
+    	$scope.user.code = '';
+    	user.set('username', userInfo.username);
+    	user.set('avatar', userInfo.avatar);
+    	user.set('isLogin', 'true');
+    	$rootScope.$broadcast('user.login');
+    	$ionicHistory.goBack();
+    });
 	};
-
 }])
+
 
 .controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', function($scope, Bbss, $ionicLoading, $state){
 	$scope.sendBbs = function(){
@@ -117,16 +109,20 @@ angular.module('drunken.controllers', [])
 	};
 }])
 
+
 .controller('CameramansCtrl', ['$scope', function($scope){
 
 }])
+
 
 .controller('CameramanDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams){
 
 }])
 
+
 .controller('ChatCtrl', ['$scope'], function($scope) {
 	
 })
+
 
 ;
