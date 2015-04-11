@@ -113,7 +113,9 @@ angular.module('drunken.services', [])
         var bbs = new Bbs();
         bbs.set("userId", user.id());
         bbs.set("bbs", title);
-        bbs.set("ACL", new AV.ACL(user.current()));
+        var acl = new AV.ACL(user.current());
+        acl.setPublicReadAccess(true);
+        bbs.set("ACL", acl);
         bbs.save(null, {
           success: function(bbs){
             resolve(bbs);

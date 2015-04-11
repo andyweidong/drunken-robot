@@ -30,4 +30,17 @@ angular.module('drunken.directives', [])
 	};
 })
 
+.directive('focusMe', ['$timeout', function($timeout){
+	return {
+		link: function(scope, element, attrs){
+			$timeout(function(){
+				element[0].focus();
+				// if(ionic.Platform.isAndroid()){
+				// 	cordova.plagins.Keyboard.show();
+				// }
+			}, 150);
+		}
+	};
+}])
+
 ;
