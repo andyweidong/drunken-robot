@@ -5,22 +5,22 @@ angular.module('drunken.controllers', [])
   $ionicLoading.show({
     template: '<i class="icon ion-load-c padding"></i>'
   });
-  Bbss.list(1, 10).then(function(bbss){
+  Bbss.list(1, 15).then(function(bbss){
     $scope.bbss = bbss;
     $ionicLoading.hide();
   });
   $scope.doRefresh = function(){
-  	setTimeout(function(){
-  		$scope.$broadcast('scroll.refreshComplete');
-  		$ionicLoading.show({ template: '45个更新!', noBackdrop: true, duration: 1000 });
-  	}, 2000);
+  	Bbss.list(1, 15).then(function(bbss){
+      $scope.bbss = bbss;
+      $ionicLoading.hide();
+      $scope.$broadcast('scroll.refreshComplete');
+    });
   };
 }])
 
 
 .controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', '$state', '$ionicPlatform', function($scope, $stateParams, Bbss, $state, $ionicPlatform) {
   Bbss.get($stateParams.bbsId).then(function(bbs){
-    $scope.bbs_title = bbs.attributes.bbs;
     $scope.bbs = bbs;
   });
   $scope.back = function(){

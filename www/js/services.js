@@ -146,4 +146,6 @@ angular.module('drunken.services', [])
 
 }])
 
+.factory('comment', []);
+
 ;
