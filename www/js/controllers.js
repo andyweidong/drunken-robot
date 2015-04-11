@@ -32,18 +32,22 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('AccountCtrl', ['$scope', '$rootScope', 'user', function($scope, $rootScope, user) {
+.controller('AccountCtrl', ['$scope', '$rootScope', 'user', '$ionicLoading', function($scope, $rootScope, user, $ionicLoading) {
   $rootScope.$on('user.login', initUserInfo);
   $scope.exit = function(){
+    $ionicLoading.show({
+      template: '<i class="icon ion-load-c padding"></i>正在退出...'
+    });
   	user.exit();
   	initUserInfo();
+    $ionicLoading.hide();
   };
   function initUserInfo(){
-  	console.log(user.isLogin());
-  	$scope.username = user.get('username');
-  	$scope.avatar = user.get('avatar');
-  	console.log($scope.avatar);
-  	$scope.isLogin = user.isLogin();
+    $scope.isLogin = user.isLogin();
+    if($scope.isLogin){
+      $scope.username = user.get('username');
+      $scope.avatar = user.get('avatar') || 'img/avatar.jpg';
+    }
   }
   initUserInfo();
 }])
@@ -71,7 +75,7 @@ angular.module('drunken.controllers', [])
 		}, 1000);
 		$ionicLoading.show({
 	      template: '<i class="icon ion-load-c padding"></i>正在发送...'
-	    });
+	   });
 		LoginService.sendCode($scope.user.phone).then(function(msg){
 			$ionicLoading.hide();
 			$ionicLoading.show({ template: msg, noBackdrop: true, duration: 2000 });
@@ -81,13 +85,11 @@ angular.module('drunken.controllers', [])
 		$ionicLoading.show({
       template: '<i class="icon ion-load-c padding"></i>正在登录...'
     });
-    LoginService.login($scope.user.phone, $scope.user.code).then(function(userInfo){
+    LoginService.login($scope.user.phone, $scope.user.code).then(function(){
     	$ionicLoading.hide();
     	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 2000 });
     	$scope.user.code = '';
-    	user.set('username', userInfo.username);
-    	user.set('avatar', userInfo.avatar);
-    	user.set('isLogin', 'true');
+
     	$rootScope.$broadcast('user.login');
     	$ionicHistory.goBack();
     });

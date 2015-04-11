@@ -4,33 +4,25 @@ angular.module('drunken.services', [])
 
   return {
     isLogin: isLogin,
-    set: set,
     get: get,
     exit: exit
   };
 
   function isLogin(){
-    return get('isLogin') === 'true' ? true : false;
-  }
-
-  function set(key, value){
-    localStorage.setItem(key, value);
-    return this;
+    return AV.User.current() ? true : false;
   }
 
   function get(key){
-    
-    console.log(key + ':' + localStorage.getItem(key));
-    return localStorage.getItem(key);
+    return AV.User.current().attributes[key];
   }
 
   function exit(){
-    set('isLogin', 'false');
+    AV.User.logOut();
   }
 
 }])
 
-.factory('LoginService', ['$q', '$ionicLoading' function($q, $ionicLoading){
+.factory('LoginService', ['$q', '$ionicLoading', 'user', function($q, $ionicLoading, appUser){
 
   var type = 'login';
 
@@ -41,72 +33,35 @@ angular.module('drunken.services', [])
 
   function sendCode(phone){
     return $q(function(resolve, reject){
-      AV.User.requestLoginSmsCode(phone + '').then(function(){
-        type = 'login';
+      AV.Cloud.requestSmsCode(phone + '').then(function(){
+        //发送成功
         resolve('发送成功!');
       }, function(err){
-        type = 'regist';
-        if(err.code === 213){//未注册
-          regist(phone, resolve, reject);
-        }else if(err.code === 215){//手机号码未验证
-          AV.User.requestMobilePhoneVerify(phone + '').then(function(){
-            //发送成功
-            resolve('发送成功!');
-          }, function(err){
-            //发送失败
-            //reject(err);
-            $ionicLoading.hide();
-            $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
-          });
-        }else {
-          //reject(err);
-          $ionicLoading.hide();
-          $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
-        }
-      });
-    });
-  }
-
-  function regist(phone, resolve, reject){
-    var user = new AV.User();
-    user.set("username", phone + '');
-    user.set("password", "XXXXXX.ew#$");
-    user.set("email", phone + "@xiangpianshuo.com");
-    user.setMobilePhoneNumber(phone + '');
-    user.signUp(null, {
-      success: function(user) {
-        resolve('发送成功!');
-      },
-      error: function(user, error) {
-        //reject(error);
-        $ionicLoading.hide();
-        $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
-      }
-    });
-  }
-
-  function registVerifyMobilePhone(code){
-    return $q(function(resolve, reject){
-      AV.User.verifyMobilePhone(code + '').then(function(){
-        resolve(AV.user.current());
-      }, function(err){
+        //发送失败
         $ionicLoading.hide();
         $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
       });
     });
-
   }
 
   function login(phone, code){
-    if(type === 'regist'){
-      return registVerifyMobilePhone(code);
-    }
+
     return $q(function(resolve, reject){
-      AV.User.logInWithMobilePhoneSmsCode(phone + '', code + '').then(function(user){
-        resolve(user);
-      }, function(err){
-        $ionicLoading.hide();
-        $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
+      var user = new AV.User();
+      user.signUpOrlogInWithMobilePhone({
+        mobilePhoneNumber: phone + '',
+        smsCode: code + ''
+      }, 
+      {
+        success:function(user){
+
+          resolve('登录成功!');
+        },
+        error: function(err){
+          //失败
+          $ionicLoading.hide();
+          $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
+        }
       });
     });
   }
