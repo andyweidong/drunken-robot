@@ -2,19 +2,27 @@ angular.module('drunken.controllers', [])
 
 
 .controller('BbssCtrl', ['$scope', 'Bbss', '$ionicLoading', function($scope, Bbss, $ionicLoading) {
-    $scope.bbss = Bbss.all();
-    $scope.doRefresh = function(){
-    	setTimeout(function(){
-    		$scope.$broadcast('scroll.refreshComplete');
-    		$ionicLoading.show({ template: '45个更新!', noBackdrop: true, duration: 1000 });
-    	}, 2000);
-    };
-    console.log('BbssCtrl');
+  $ionicLoading.show({
+    template: '<i class="icon ion-load-c padding"></i>'
+  });
+  Bbss.list(1, 10).then(function(bbss){
+    $scope.bbss = bbss;
+    $ionicLoading.hide();
+  });
+  $scope.doRefresh = function(){
+  	setTimeout(function(){
+  		$scope.$broadcast('scroll.refreshComplete');
+  		$ionicLoading.show({ template: '45个更新!', noBackdrop: true, duration: 1000 });
+  	}, 2000);
+  };
 }])
 
 
 .controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', '$state', '$ionicPlatform', function($scope, $stateParams, Bbss, $state, $ionicPlatform) {
-  $scope.bbs = Bbss.get($stateParams.bbsId);
+  Bbss.get($stateParams.bbsId).then(function(bbs){
+    $scope.bbs_title = bbs.attributes.bbs;
+    $scope.bbs = bbs;
+  });
   $scope.back = function(){
   	$state.go('tab.bbss');
   };
@@ -99,14 +107,18 @@ angular.module('drunken.controllers', [])
 
 .controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', function($scope, Bbss, $ionicLoading, $state){
 	$scope.sendBbs = function(){
+    if(!$scope.bbs){
+      $ionicLoading.show({ template: '请输入内容', noBackdrop: true, duration: 1000 });
+      return;
+    }
 		$ionicLoading.show({
 			template: '<i class="icon ion-load-c padding"></i>正在发送...'
 		});
-		Bbss.create($scope.bbs).then(function(){
+		Bbss.create($scope.bbs).then(function(bbs){
 			$ionicLoading.hide();
 			$ionicLoading.show({ template: '成功!', noBackdrop: true, duration: 2000 });
 			$scope.bbs = '';
-			$state.go('bbs-detail', {bbsId: 0});
+			$state.go('bbs-detail', {bbsId: bbs.id});
 		});
 	};
 }])

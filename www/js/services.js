@@ -5,7 +5,9 @@ angular.module('drunken.services', [])
   return {
     isLogin: isLogin,
     get: get,
-    exit: exit
+    exit: exit,
+    id: id,
+    current: current
   };
 
   function isLogin(){
@@ -18,6 +20,14 @@ angular.module('drunken.services', [])
 
   function exit(){
     AV.User.logOut();
+  }
+
+  function id(){
+    return AV.User.current().id;
+  }
+
+  function current(){
+    return AV.User.current();
   }
 
 }])
@@ -54,7 +64,6 @@ angular.module('drunken.services', [])
       }, 
       {
         success:function(user){
-
           resolve('登录成功!');
         },
         error: function(err){
@@ -68,75 +77,73 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('Bbss', ['$q', function($q) {
+.factory('Bbss', ['$q', 'user', '$ionicLoading', function($q, user, $ionicLoading) {
 
-  var bbss = [{
-    id: 0,
-    name: '你最近在看什么书',
-    lastText: '[图片]我在看老人与海',
-    comments: [{
-      id: 5,
-      img: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      name: '哈哈',
-      content: '锤子手机',
-      time: '2015年4月1日',
-      chats: 3,
-      like: 4
-    }, {
-      id: 2,
-      img: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      name: '哈哈',
-      content: '锤子手机',
-      time: '2015年4月1日',
-      chats: 3,
-      like: 4
-    }]
-  }, {
-    id: 1,
-    name: '月薪',
-    lastText: '这是一个秘密',
-    comments: [{
-      id: 5,
-      img: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      name: '哈哈',
-      content: '锤子手机',
-      time: '2015年4月1日',
-      chats: 3,
-      like: 4
-    }, {
-      id: 2,
-      img: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      name: '哈哈',
-      content: '锤子手机',
-      time: '2015年4月1日',
-      chats: 3,
-      like: 4
-    }]
-  }];
+
 
   return {
-    all: function() {
-      return bbss;
-    },
-    remove: function(bbs) {
-      bbss.splice(bbss.indexOf(bbs), 1);
-    },
-    get: function(bbsId) {
-      for (var i = 0; i < bbss.length; i++) {
-        if (bbss[i].id === parseInt(bbsId)) {
-          return bbss[i];
+    list: list,
+    remove: remove,
+    get: get,
+    create: create
+  };
+
+  function get(bbsId){
+    return $q(function(resolve, reject){
+      var bbs = new AV.Query('M_Bbs');
+      bbs.get(bbsId, {
+        success: function(bbs){
+          resolve(bbs);
+        },
+        error: function(object, error){
+          $ionicLoading.hide();
+          $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
         }
-      }
-      return null;
-    },
-    create: function(title){
+      })
+    });
+  }
+
+  function remove(){
+
+  }
+
+  function create(title){
       return $q(function(resolve, reject){
-        setTimeout(function(){
-          resolve('创建成功');
-        }, 1000);
+        var Bbs = AV.Object.extend("M_Bbs");
+        var bbs = new Bbs();
+        bbs.set("userId", user.id());
+        bbs.set("bbs", title);
+        bbs.set("ACL", new AV.ACL(user.current()));
+        bbs.save(null, {
+          success: function(bbs){
+            resolve(bbs);
+          },
+          error: function(bbs, error){
+            $ionicLoading.hide();
+            $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
+          }
+        });
       });
     }
-  };
+
+  function list(index, count){
+    return $q(function(resolve, reject){
+      var query = new AV.Query("M_Bbs");
+      query.skip(index ? (index -1) * count : 1);
+      query.limit(count ? count : 10);
+      query.descending("createdAt");
+      query.find({
+          success: function(results) {
+            resolve(results);
+          },
+          error: function(error) {
+            $ionicLoading.hide();
+            $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
+          }
+      });
+    });
+  }
+
 }])
 
 ;

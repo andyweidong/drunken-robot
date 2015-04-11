@@ -1,9 +1,9 @@
-<ion-view view-title="{{bbs.name}}" hide-back-button="true">
+<ion-view view-title="{{bbs_title}}" hide-back-button="true">
   <ion-nav-buttons side="left">
     <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="back(1)"></a>
   </ion-nav-buttons>
   <ion-content class="padding">
-    
+    <div>{{bbs.attributes.bbs}}</div>
     <div class="list card" ng-repeat="comment in bbs.comments">
       <div class="item item-avatar">
         <img src="{{comment.img}}">
