@@ -1,9 +1,16 @@
-<ion-view view-title="bbs">
+<ion-view view-title="灌水">
+  <ion-nav-buttons side="right" class="">
+    <a class="button button-icon icon ion-compose" href="#/createBbs"></a>
+  </ion-nav-buttons>
   <ion-content class="">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
     <ion-list>
-      <ion-item class="item-remove-animate" ng-repeat="bbs in bbss" type="item-text-wrap" href="#/tab/bbs/{{bbs.id}}">
-        <h2>{{bbs.name}}</h2>
-        <p>{{bbs.lastText}}</p>
+      <ion-item class="item-remove-animate" ng-repeat="bbs in bbss" type="item-text-wrap" href="#/bbs/{{bbs.id}}">
+        <h2>{{bbs.attributes.bbs}}</h2>
+        <p style="font-size: 12px;"><!-- {{bbs.lastText}} -->[图片]哈哈</p>
         <ion-option-button class="button-assertive" >
           Delete
         </ion-option-button>

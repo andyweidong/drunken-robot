@@ -1,11 +1,4 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,12 +14,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
+
   $stateProvider
 
   // setup an abstract state for the tabs directive
@@ -47,25 +37,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-  .state('tab.bbs-detail', {
-    url: '/bbs/:bbsId',
+  .state('tab.location', {
+    url: '/location',
     views: {
-      'tab-bbss': {
-        templateUrl: 'templates/bbs-detail.html',
-        controller: 'BbsDetailCtrl'
+      'tab-location': {
+        templateUrl: 'templates/tab-location.html',
+        controller: 'LocationCtrl'
       }
     }
   })
-  .state('tab.location', {
-      url: '/location',
-      views: {
-        'tab-location': {
-          templateUrl: 'templates/tab-location.html',
-          controller: 'LocationCtrl'
-        }
+  .state('tab.cameramans', {
+    url: '/cameramans',
+    views: {
+      'tab-location': {
+        templateUrl: 'templates/tab-cameramans.html',
+        controller: 'CameramansCtrl'
       }
-    })
-
+    }
+  })
 
   .state('tab.account', {
     url: '/account',
@@ -75,9 +64,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
+  //login
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
 
-  // if none of the above states are matched, use this as the fallback
+  .state('bbs-detail', {
+    url: '/bbs/:bbsId',
+    templateUrl: 'templates/bbs-detail.html',
+    controller: 'BbsDetailCtrl'
+  })
+
+  .state('createBbs', {
+    url: '/createBbs',
+    templateUrl: 'templates/create-bbs.html',
+    controller: 'CreateBbsCtrl'
+  })
+
+  .state('cameraman-detail', {
+    url: '/cameraman/:cameramanId',
+    templateUrl: 'templates/cameraman-detail.html',
+    controller: 'CameramanDetailCtrl'
+  })
+
+  .state('chat', {
+    url: '/chat',
+    templateUrl: 'templates/chat.html',
+    controller: 'ChatCtrl'
+  })
+
+  ;
+
   $urlRouterProvider.otherwise('/tab/bbss');
+  $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.tabs.style('standard');
 
 });

@@ -1,6 +1,10 @@
-<ion-view view-title="{{bbs.name}}">
+<ion-view  hide-back-button="true">
+  <ion-nav-title>{{bbs.attributes.bbs}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="back(1)"></a>
+  </ion-nav-buttons>
   <ion-content class="padding">
-    
+    <div>{{bbs.attributes.bbs}}</div>
     <div class="list card" ng-repeat="comment in bbs.comments">
       <div class="item item-avatar">
         <img src="{{comment.img}}">
@@ -10,15 +14,14 @@
         <p>{{comment.content}}</p>
       </div>
       <div class="item tabs tabs-secondary tabs-icon-left">
-        <a class="tab-item" href="#">
+        <a class="tab-item" href="#" on-tap="like()">
           <i class="icon ion-thumbsup"></i>
           {{comment.like}}
         </a>
-        <a class="tab-item" href="#">
+        <a class="tab-item" href="#/chat">
           <i class="icon ion-chatbox"></i>
           {{comment.chats}}
         </a>
-
       </div>
     </div>
   </ion-content>
