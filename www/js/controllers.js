@@ -5,12 +5,12 @@ angular.module('drunken.controllers', [])
   $ionicLoading.show({
     template: '<i class="icon ion-load-c padding"></i>'
   });
-  Bbss.list(1, 15).then(function(bbss){
+  Bbss.list(0, 20).then(function(bbss){
     $scope.bbss = bbss;
     $ionicLoading.hide();
   });
   $scope.doRefresh = function(){
-  	Bbss.list(1, 15).then(function(bbss){
+  	Bbss.list($scope.bbss[0].attributes.autoincrement, 20).then(function(bbss){
       $scope.bbss = bbss;
       $ionicLoading.hide();
       $scope.$broadcast('scroll.refreshComplete');

@@ -79,13 +79,14 @@ angular.module('drunken.services', [])
 
 .factory('Bbss', ['$q', 'user', '$ionicLoading', function($q, user, $ionicLoading) {
 
-
+  var bbsCache = [];
 
   return {
     list: list,
     remove: remove,
     get: get,
-    create: create
+    create: create,
+    bbsCache: bbsCache
   };
 
   function get(bbsId){
@@ -128,15 +129,19 @@ angular.module('drunken.services', [])
       });
     }
 
-  function list(index, count){
+  function list(lastId, count){
     return $q(function(resolve, reject){
       var query = new AV.Query("M_Bbs");
-      query.skip(index ? (index -1) * count : 1);
-      query.limit(count ? count : 10);
-      query.descending("createdAt");
+      query.greaterThan("autoincrement", lastId ? lastId : 0);
+      query.limit(count ? count : 20);
+      query.descending("autoincrement");
       query.find({
           success: function(results) {
-            resolve(results);
+            if(results.length === 20){
+              bbsCache = [];
+            }
+            [].unshift.apply(bbsCache, results);
+            resolve(bbsCache);
           },
           error: function(error) {
             $ionicLoading.hide();
