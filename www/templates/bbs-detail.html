@@ -3,8 +3,18 @@
   <ion-nav-buttons side="left">
     <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="back(1)"></a>
   </ion-nav-buttons>
-  <ion-content class="padding">
-    <div>{{bbs.attributes.bbs}}</div>
+  <ion-nav-buttons side="right" class="">
+    <button class="button button-icon icon ion-android-favorite-outline" ></button>
+    <button class="button button-icon icon ion-android-favorite" ></button>
+  </ion-nav-buttons>
+  <ion-content class=" bbs-detail">
+    <div class="padding text-center bbs-header">
+      <h2 class="">{{bbs.attributes.bbs}}</h2>
+      <p><span>{{bbs.comments}}个对话</span><span>{{bbs.attentions}}人关注</span></p>
+    </div>
+    <div class="add-comment padding">
+      <a href="">我在{{bbs.attributes.bbs}}</a>
+    </div>
     <div class="list card" ng-repeat="comment in bbs.comments">
       <div class="item item-avatar">
         <img src="{{comment.img}}">

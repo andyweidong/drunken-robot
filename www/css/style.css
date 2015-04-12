@@ -71,3 +71,28 @@ input.input-radius {
   100% {
     transform: rotate(359deg); }
 }
+
+.bbs-detail {
+
+}
+.bbs-detail .bbs-header span {
+  padding: 0 5px;
+  color: #97a79f;
+}
+.bbs-detail .add-comment {
+  border-top: 1px solid #cbd6d8;
+  border-bottom: 1px solid #cbd6d8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
