@@ -162,10 +162,19 @@ angular.module('drunken.controllers', [])
 .controller('ChatCtrl', ['$scope'], function($scope) {
 	
 })
-.controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', function($scope, comment, $stateParams) {
+.controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', 'imagePicker' function($scope, comment, $stateParams, imagePicker) {
   $scope.bbsId = $stateParams.bbsId;
   $scope.addComment = function(){
     comment.create($scope.comment, $scope.bbsId);
+  };
+  $scope.selectImg = function(){
+    imagePicker.getPictures().then(function(results){
+      for(var i = 0; i < results.length; i++){
+        console.dir(results[i]);
+      }
+    }, function(err){
+      console.dir(err);
+    });
   };
 }])
 
