@@ -21,17 +21,41 @@ angular.module('drunken.controllers', [])
 
 .controller('BbsDetailCtrl', ['$scope', '$stateParams', 'Bbss', '$state', '$ionicPlatform', function($scope, $stateParams, Bbss, $state, $ionicPlatform) {
   Bbss.get($stateParams.bbsId).then(function(bbs){
-    $scope.bbs = bbs;
+    //$scope.bbs = bbs;
+    $scope.bbs = {
+      attributes: {
+        bbs: 'fdfdfffd'
+      },
+      allComments: 120,
+      attentions: 234,
+      id: 'fdfdfdfdff34234',
+      comments: [{
+        like: 5,
+        chats: 10,
+        avatarPath: 'img/avatar.jpg',
+        username: 'oxoxll',
+        content: 'contentcontentcontentcontentcontentcontentcontentcontentcontent',
+        time: '2014-13-1'
+      }, {
+        like: 5,
+        chats: 10,
+        avatarPath: 'img/avatar.jpg',
+        username: 'oxoxll',
+        content: 'contentcontentcontentcontentcontentcontentcontentcontentcontent',
+        time: '2014-13-1'
+      }, {
+        like: 5,
+        chats: 10,
+        avatarPath: 'img/avatar.jpg',
+        username: 'oxoxll',
+        content: 'contentcontentcontentcontentcontentcontentcontentcontentcontent',
+        time: '2014-13-1'
+      }]
+    };
   });
-  $scope.back = function(){
-  	$state.go('tab.bbss');
-  };
   $scope.like = function(id){
   	
   };
-  $ionicPlatform.registerBackButtonAction(function() {
-     $scope.back();
-  }, 100);
 }])
 
 
@@ -105,7 +129,7 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$state', function($scope, Bbss, $ionicLoading, $state){
+.controller('CreateBbsCtrl', ['$scope', 'Bbss', '$ionicLoading', '$ionicHistory', function($scope, Bbss, $ionicLoading, $ionicHistory){
 	$scope.sendBbs = function(){
     if(!$scope.bbs){
       $ionicLoading.show({ template: '请输入内容', noBackdrop: true, duration: 1000 });
@@ -116,9 +140,10 @@ angular.module('drunken.controllers', [])
 		});
 		Bbss.create($scope.bbs).then(function(bbs){
 			$ionicLoading.hide();
-			$ionicLoading.show({ template: '成功!', noBackdrop: true, duration: 2000 });
+			$ionicLoading.show({ template: '成功!', noBackdrop: true, duration: 1000 });
 			$scope.bbs = '';
-			$state.go('bbs-detail', {bbsId: bbs.id});
+			//$state.go('bbs-detail', {bbsId: bbs.id});
+      $ionicHistory.goBack();
 		});
 	};
 }])
@@ -137,6 +162,12 @@ angular.module('drunken.controllers', [])
 .controller('ChatCtrl', ['$scope'], function($scope) {
 	
 })
+.controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', function($scope, comment, $stateParams) {
+  $scope.bbsId = $stateParams.bbsId;
+  $scope.addComment = function(){
+    comment.create($scope.comment, $scope.bbsId);
+  };
+}])
 
 
 ;

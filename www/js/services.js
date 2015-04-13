@@ -153,6 +153,15 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('comment', []);
+.factory('comment', ['$q', '$ionicLoading', 'user', function($q, $ionicLoading, appUser){
+  return {
+    create: create
+  };
+
+  function create(){
+
+  }
+
+}]);
 
 ;

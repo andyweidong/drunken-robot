@@ -1,0 +1,12 @@
+<ion-view hide-back-button="true">
+  <ion-nav-title>评论</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" on-tap="addComment()">发布</button>
+  </ion-nav-buttons>
+  <ion-content class="">
+    <textarea class="textarea-create-bbs" placeholder="添加一个评论" ng-model="$parent.comment" focus-me></textarea>
+  </ion-content>
+</ion-view>

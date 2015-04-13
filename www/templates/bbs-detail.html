@@ -1,7 +1,7 @@
 <ion-view  hide-back-button="true">
   <ion-nav-title>{{bbs.attributes.bbs}}</ion-nav-title>
   <ion-nav-buttons side="left">
-    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="back(1)"></a>
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right" class="">
     <button class="button button-icon icon ion-android-favorite-outline" ></button>
@@ -10,20 +10,21 @@
   <ion-content class=" bbs-detail">
     <div class="padding text-center bbs-header">
       <h2 class="">{{bbs.attributes.bbs}}</h2>
-      <p><span>{{bbs.comments}}个对话</span><span>{{bbs.attentions}}人关注</span></p>
+      <p><span>{{bbs.allComments}}个对话</span><span>{{bbs.attentions}}人关注</span></p>
     </div>
-    <div class="add-comment padding">
-      <a href="">我在{{bbs.attributes.bbs}}</a>
-    </div>
+    <a class="item item-icon-left" href="#/bbs-comment/{{bbs.id}}">
+      <i class="icon ion-android-create"></i>我在{{bbs.attributes.bbs}}
+    </a>
     <div class="list card" ng-repeat="comment in bbs.comments">
       <div class="item item-avatar">
-        <img src="{{comment.img}}">
-        <h2>{{comment.name}}</h2>
+        <img src="{{comment.avatarPath}}">
+        <h2>{{comment.username}}</h2>
+        <p>{{comment.time}}</p>
       </div>
       <div class="item item-body">
         <p>{{comment.content}}</p>
       </div>
-      <div class="item tabs tabs-secondary tabs-icon-left">
+      <div class="item tabs tabs-secondary tabs-icon-right">
         <a class="tab-item" href="#" on-tap="like()">
           <i class="icon ion-thumbsup"></i>
           {{comment.like}}

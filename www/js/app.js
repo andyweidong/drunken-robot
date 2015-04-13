@@ -37,6 +37,8 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
+
+
   .state('tab.location', {
     url: '/location',
     views: {
@@ -77,6 +79,11 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     templateUrl: 'templates/bbs-detail.html',
     controller: 'BbsDetailCtrl'
   })
+  .state('bbs-comment', {
+    url: '/bbs-comment/:bbsId',
+    templateUrl: 'templates/add-comment.html',
+    controller: 'BbsCommentCtrl'
+  })
 
   .state('createBbs', {
     url: '/createBbs',
@@ -96,10 +103,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'ChatCtrl'
   })
 
+
+
   ;
 
   $urlRouterProvider.otherwise('/tab/bbss');
-  $ionicConfigProvider.tabs.position('bottom');
-  $ionicConfigProvider.tabs.style('standard');
+   $ionicConfigProvider.tabs.position('bottom');
+   $ionicConfigProvider.tabs.style('standard');
 
 });
