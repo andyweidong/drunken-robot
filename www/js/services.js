@@ -32,7 +32,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('LoginService', ['$q', '$ionicLoading', 'user', function($q, $ionicLoading, appUser){
+.factory('LoginService', ['_q', 'user', function(_q, appUser){
 
   var type = 'login';
 
@@ -42,21 +42,20 @@ angular.module('drunken.services', [])
   }
 
   function sendCode(phone){
-    return $q(function(resolve, reject){
+    return _q(function(resolve, reject){
       AV.Cloud.requestSmsCode(phone + '').then(function(){
         //发送成功
         resolve('发送成功!');
       }, function(err){
         //发送失败
-        $ionicLoading.hide();
-        $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
+        reject(err);
       });
     });
   }
 
   function login(phone, code){
 
-    return $q(function(resolve, reject){
+    return _q(function(resolve, reject){
       var user = new AV.User();
       user.signUpOrlogInWithMobilePhone({
         mobilePhoneNumber: phone + '',
@@ -67,9 +66,7 @@ angular.module('drunken.services', [])
           resolve('登录成功!');
         },
         error: function(err){
-          //失败
-          $ionicLoading.hide();
-          $ionicLoading.show({ template: err.msg, noBackdrop: true, duration: 1000 });
+          reject(err);
         }
       });
     });
@@ -77,7 +74,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('Bbss', ['$q', 'user', '$ionicLoading', function($q, user, $ionicLoading) {
+.factory('Bbss', ['$q', '_q', 'user', '$ionicLoading', function($q, _q, user, $ionicLoading) {
 
   var bbsCache = [];
 
@@ -90,15 +87,14 @@ angular.module('drunken.services', [])
   };
 
   function get(bbsId){
-    return $q(function(resolve, reject){
+    return _q(function(resolve, reject){
       var bbs = new AV.Query('M_Bbs');
       bbs.get(bbsId, {
         success: function(bbs){
           resolve(bbs);
         },
         error: function(object, error){
-          $ionicLoading.hide();
-          $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
+          reject(error, object);
         }
       })
     });
@@ -109,7 +105,7 @@ angular.module('drunken.services', [])
   }
 
   function create(title){
-      return $q(function(resolve, reject){
+      return _q(function(resolve, reject){
         var Bbs = AV.Object.extend("M_Bbs");
         var bbs = new Bbs();
         bbs.set("userId", user.id());
@@ -122,8 +118,7 @@ angular.module('drunken.services', [])
             resolve(bbs);
           },
           error: function(bbs, error){
-            $ionicLoading.hide();
-            $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
+            reject(error, bbs);
           }
         });
       });
@@ -144,7 +139,6 @@ angular.module('drunken.services', [])
             resolve(bbsCache);
           },
           error: function(error) {
-            $ionicLoading.hide();
             $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
           }
       });
@@ -178,6 +172,27 @@ angular.module('drunken.services', [])
       return q.promise;
     }
   };
+}])
+
+.factory('_q', ['$q', '$ionicLoading', function($q, $ionicLoading){
+
+  return _q;
+
+  function _q(fn){
+    $ionicLoading.show({
+      template: '<ion-spinner icon="ios"></ion-spinner>'
+    });
+    return $q(function(resolve, reject){
+      $q(fn).then(function(result){
+        $ionicLoading.hide();
+        resolve(result);
+      }, function(err){
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: error.msg ? error.msg : error.message, noBackdrop: true, duration: 1000 });
+        reject(err);
+      });
+    });
+  }
 }])
 
 ;
