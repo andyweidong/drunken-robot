@@ -138,19 +138,27 @@ angular.module('drunken.controllers', [])
 .controller('ChatCtrl', ['$scope'], function($scope) {
 	
 })
-.controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', 'imagePicker' function($scope, comment, $stateParams, imagePicker) {
+.controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', 'imagePicker', function($scope, comment, $stateParams, imagePicker) {
   $scope.bbsId = $stateParams.bbsId;
+  $scope.imgSrc = '';
+  $scope.isSelect = false;
   $scope.addComment = function(){
-    comment.create($scope.comment, $scope.bbsId);
+    //comment.create($scope.comment, $scope.bbsId);
   };
   $scope.selectImg = function(){
-    imagePicker.getPictures().then(function(results){
-      for(var i = 0; i < results.length; i++){
-        console.dir(results[i]);
-      }
+    imagePicker.getPictures({
+      maximumImagesCount: 1
+    }).then(function(results){
+      $scope.imgSrc = results[0];
+      $scope.isSelect = true;
     }, function(err){
       console.dir(err);
+      $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
     });
+  };
+  $scope.closeSelectImg = function(){
+    $scope.imgSrc = '';
+    $scope.isSelect = false;
   };
 }])
 
