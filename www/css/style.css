@@ -33,7 +33,12 @@ input.input-radius {
   width: 44px;
   height: 44px;
 }
-
+.scroll {
+	height: 100%;
+}
+#l-map {
+	height: 100%;
+}
 
 
 

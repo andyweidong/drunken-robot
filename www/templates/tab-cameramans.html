@@ -1,8 +1,14 @@
-<ion-view view-title="摄影师" >
+<ion-view view-title="摄影师" hide-back-button="true">
   <ion-nav-buttons side="right" class>
     <a class="button button-icon icon ion-ios-location-outline" href="#/tab/location"></a>
   </ion-nav-buttons>
   <ion-content>
-    cameraman list
+    <div class="list">
+      <a class="item item-avatar" href="#" ng-repeat="cameraman in cameramans">
+        <img src="img/avatar.jpg">
+        <h2>小丽</h2>
+        <p>接单229次</p>
+      </a>
+    </div>
   </ion-content>
 </ion-view>

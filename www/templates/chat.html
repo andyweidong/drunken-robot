@@ -1,10 +1,20 @@
-<ion-view view-title="{{bbs.name}}">
+<ion-view hide-back-button="true">
+  <ion-nav-title>聊天</ion-nav-title>
   <ion-nav-buttons side="left">
-    <button class="button button-clear" ng-click="$ionicGoBack($event)"><i class="ion-arrow-left-c"></i></button>
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
-  <ion-content class="padding">
-    <div ng-peat="msg in msgs">
-        
+  <!-- <ion-nav-buttons side="right">
+    <button class="button button-clear" on-tap="addComment()"></button>
+  </ion-nav-buttons> -->
+  <ion-content class="">
+    <div>--------</div>
+    <div>
+      <p ng-repeat="res in results">
+        {{res}}
+      </p>
     </div>
   </ion-content>
+  <div class="bar bar-footer bar-stable">
+    <button class="button icon ion-image pull-left button-icon" on-tap="selectImg()"></button>
+  </div>
 </ion-view>

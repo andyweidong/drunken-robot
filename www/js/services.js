@@ -170,9 +170,9 @@ angular.module('drunken.services', [])
       var q = $q.defer();
       window.imagePicker.getPictures(
         function(results) {
-          $q.resolve(results);
+          q.resolve(results);
         }, function (error) {
-          $q.reject(error);
+          q.reject(error);
         }, options
       );
       return q.promise;

@@ -14,7 +14,7 @@
   </ion-content>
   <div class="bar bar-footer bar-stable">
     <button class="button icon ion-image pull-left button-icon" on-tap="selectImg()" ng-show="!isSelect"></button>
-    <img class="comment-picker-img" src="img/avatar.jpg" ng-show="isSelect">
+    <img class="comment-picker-img" ng-src="{{imgSrc}}" ng-show="isSelect">
     <button class="button icon ion-close pull-right button-icon" on-tap="closeSelectImg()" ng-show="isSelect"></button>
     
   </div>

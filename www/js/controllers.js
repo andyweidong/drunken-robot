@@ -54,7 +54,9 @@ angular.module('drunken.controllers', [])
 
 
 .controller('LocationCtrl', ['$scope', function($scope) {
-  
+  var map = new BMap.Map("l-map");  
+map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);  
+console.log(111);
 }])
 
 
@@ -126,7 +128,39 @@ angular.module('drunken.controllers', [])
 
 
 .controller('CameramansCtrl', ['$scope', function($scope){
-
+  $scope.cameramans = [{
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }, {
+    avatar: 'img/avatar.jpg',
+    times: 343,
+    name: '丽丽'
+  }];
 }])
 
 
@@ -134,10 +168,20 @@ angular.module('drunken.controllers', [])
 
 }])
 
+.controller('ChatCtrl', ['$scope', 'imagePicker', function($scope, imagePicker) {
+  $scope.results = [1];
+	$scope.selectImg = function(){
+    imagePicker.getPictures({
+      maximumImagesCount: 1
+    }).then(function(results){
+      $scope.results = results;
+    }, function(err){
+      console.dir(err);
+      $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+    });
+  };
+}])
 
-.controller('ChatCtrl', ['$scope'], function($scope) {
-	
-})
 .controller('BbsCommentCtrl', ['$scope', 'comment', '$stateParams', 'imagePicker', function($scope, comment, $stateParams, imagePicker) {
   $scope.bbsId = $stateParams.bbsId;
   $scope.imgSrc = '';
