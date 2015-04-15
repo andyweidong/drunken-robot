@@ -5,9 +5,9 @@
   <ion-content>
     <div class="list">
       <a class="item item-avatar" href="#" ng-repeat="cameraman in cameramans">
-        <img src="img/avatar.jpg">
-        <h2>小丽</h2>
-        <p>接单229次</p>
+        <img ng-src="{{cameraman.avatar}}">
+        <h2>{{cameraman.name}}</h2>
+        <p>接单{{cameraman.times}}次</p>
       </a>
     </div>
   </ion-content>
