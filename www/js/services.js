@@ -77,13 +77,15 @@ angular.module('drunken.services', [])
 .factory('Bbss', ['$q', '_q', 'user', '$ionicLoading', function($q, _q, user, $ionicLoading) {
 
   var bbsCache = [];
+  var maxIdIndex = 0;
 
   return {
     list: list,
     remove: remove,
     get: get,
     create: create,
-    bbsCache: bbsCache
+    bbsCache: bbsCache,
+    maxIdIndex: maxIdIndex
   };
 
   function get(bbsId){
@@ -105,24 +107,26 @@ angular.module('drunken.services', [])
   }
 
   function create(title){
-      return _q(function(resolve, reject){
-        var Bbs = AV.Object.extend("M_Bbs");
-        var bbs = new Bbs();
-        bbs.set("userId", user.id());
-        bbs.set("bbs", title);
-        var acl = new AV.ACL(user.current());
-        acl.setPublicReadAccess(true);
-        bbs.set("ACL", acl);
-        bbs.save(null, {
-          success: function(bbs){
-            resolve(bbs);
-          },
-          error: function(bbs, error){
-            reject(error, bbs);
-          }
-        });
+    return _q(function(resolve, reject){
+      var Bbs = AV.Object.extend("M_Bbs");
+      var bbs = new Bbs();
+      bbs.set("userId", user.id());
+      bbs.set("bbs", title);
+      var acl = new AV.ACL(user.current());
+      acl.setPublicReadAccess(true);
+      bbs.set("ACL", acl);
+      bbs.save(null, {
+        success: function(bbs){
+          bbsCache.unshift(bbs);
+          maxIdIndex++;
+          resolve(bbs);
+        },
+        error: function(bbs, error){
+          reject(error, bbs);
+        }
       });
-    }
+    });
+  }
 
   function list(lastId, count){
     return $q(function(resolve, reject){
@@ -135,6 +139,8 @@ angular.module('drunken.services', [])
             if(results.length === 20){
               bbsCache = [];
             }
+            bbsCache.splice(0, maxIdIndex);
+            maxIdIndex = 0;
             [].unshift.apply(bbsCache, results);
             resolve(bbsCache);
           },

@@ -4,7 +4,7 @@ angular.module('drunken.controllers', [])
 .controller('BbssCtrl', ['$scope', 'Bbss', function($scope, Bbss) {
 
   $scope.doRefresh = function(){
-  	Bbss.list($scope.bbss ? $scope.bbss[0].attributes.autoincrement : 0, 20).then(function(bbss){
+  	Bbss.list($scope.bbss ? $scope.bbss[Bbss.maxIdIndex].attributes.autoincrement : 0, 20).then(function(bbss){
       $scope.bbss = bbss;
       $scope.$broadcast('scroll.refreshComplete');
     });
