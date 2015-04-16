@@ -3,6 +3,12 @@
     <a class="button button-icon icon ion-ios-location-outline" href="#/tab/location"></a>
   </ion-nav-buttons>
   <ion-content>
-    cameraman list
+    <div class="list">
+      <a class="item item-avatar" href="#" ng-repeat="cameraman in cameramans">
+        <img ng-src="{{cameraman.avatar}}">
+        <h2>{{cameraman.name}}</h2>
+        <p>接单{{cameraman.times}}次</p>
+      </a>
+    </div>
   </ion-content>
 </ion-view>
