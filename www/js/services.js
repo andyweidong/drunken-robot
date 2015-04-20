@@ -201,6 +201,20 @@ angular.module('drunken.services', [])
   }
 }])
 
+.factory('loadScript', ['$q', function($q){
+  return function(src){
+    console.log('in loadScript');
+    return $q(function(resolve, reject){
+      var script = document.createElement('script');
+      script.onload = function() {
+        resolve();
+      };
+      script.src = src;
+      document.getElementsByTagName('head')[0].appendChild(script);
+    });
+  };
+}])
+
 ;
 
 

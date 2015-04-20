@@ -53,10 +53,13 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('LocationCtrl', ['$scope', function($scope) {
-  var map = new BMap.Map("l-map");  
-map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);  
-console.log(111);
+.controller('LocationCtrl', ['$scope', 'loadScript', function($scope, loadScript) {
+  loadScript('http://api.map.baidu.com/api?type=quick&ak=qtwRMwRkWZ9EndLMnMpGHAWs&v=1.0').then(function(){
+    var map = new BMap.Map("l-map");  
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+    console.log('loaded');  
+  });
+
 }])
 
 
