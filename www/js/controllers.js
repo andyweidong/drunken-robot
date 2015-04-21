@@ -1,15 +1,9 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', 'Bbss', function($scope, Bbss) {
-
-  $scope.doRefresh = function(){
-  	Bbss.list($scope.bbss ? $scope.bbss[Bbss.maxIdIndex].attributes.autoincrement : 0, 20).then(function(bbss){
-      $scope.bbss = bbss;
-      $scope.$broadcast('scroll.refreshComplete');
-    });
-  };
-  $scope.doRefresh();
+.controller('BbssCtrl', ['$scope', 'slider', function($scope, slider) {
+  slider('slider1_container');
+  
 }])
 
 
@@ -130,7 +124,7 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('CameramansCtrl', ['$scope', function($scope){
+.controller('OrderlistsCtrl', ['$scope', function($scope){
   $scope.cameramans = [{
     avatar: 'img/avatar.jpg',
     times: 343,

@@ -48,12 +48,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
-  .state('tab.cameramans', {
-    url: '/cameramans',
+  .state('tab.orderlists', {
+    url: '/orderlists',
     views: {
       'tab-location': {
-        templateUrl: 'templates/tab-cameramans.html',
-        controller: 'CameramansCtrl'
+        templateUrl: 'templates/tab-orderlists.html',
+        controller: 'OrderlistsCtrl'
       }
     }
   })
