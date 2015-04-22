@@ -74,21 +74,21 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'LoginCtrl'
   })
 
-  .state('bbs-detail', {
-    url: '/bbs/:bbsId',
-    templateUrl: 'templates/bbs-detail.html',
-    controller: 'BbsDetailCtrl'
+  .state('set-address', {
+    url: '/set-address',
+    templateUrl: 'templates/set-address.html',
+    controller: 'SetAddressCtrl'
   })
-  .state('bbs-comment', {
-    url: '/bbs-comment/:bbsId',
-    templateUrl: 'templates/add-comment.html',
-    controller: 'BbsCommentCtrl'
+  .state('book-ticket', {
+    url: '/book-ticket',
+    templateUrl: 'templates/book-ticket.html',
+    controller: 'BookTicketCtrl'
   })
 
-  .state('createBbs', {
-    url: '/createBbs',
-    templateUrl: 'templates/create-bbs.html',
-    controller: 'CreateBbsCtrl'
+  .state('set-system', {
+    url: '/set-system',
+    templateUrl: 'templates/set-system.html',
+    controller: 'SetSystemCtrl'
   })
 
   .state('cameraman-detail', {
