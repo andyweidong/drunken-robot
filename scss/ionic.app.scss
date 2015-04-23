@@ -14,10 +14,31 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$positive:                        #25a24d !default;
+$positive:                        #f80 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
+
+//variable
+$bggray: #eeebe5 !default;
+
+//css
+.gray-bg {
+  background-color: $bggray;
+}
+
+.login-explain {
+  text-align: center;
+}
+.login-explain a {
+  text-decoration: none;
+  color: $positive;
+}
+
+#l-map {
+  height: 100%;
+}
