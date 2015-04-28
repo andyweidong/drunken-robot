@@ -73,6 +73,11 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
   })
+  .state('sign-up', {
+    url: '/sign-up',
+    templateUrl: 'templates/sign-up.html',
+    controller: 'SignUpCtrl'
+  })
 
   .state('set-address', {
     url: '/set-address',

@@ -22,6 +22,7 @@ angular.module('drunken.controllers', [])
 }])
 
 
+
 .controller('AccountCtrl', ['$scope', '$rootScope', 'user', function($scope, $rootScope, user) {
   $rootScope.$on('user.login', initUserInfo);
   $scope.exit = function(){
@@ -71,6 +72,40 @@ angular.module('drunken.controllers', [])
     	$ionicHistory.goBack();
     });
 	};
+}])
+
+.controller('SignUpCtrl', ['$scope', '$interval', '$ionicLoading', 'SignUpService', '$ionicHistory', '$rootScope', 'user', function($scope, $interval, $ionicLoading, SignUpService, $ionicHistory, $rootScope, user){
+  var time = 60;
+  $scope.codeDisable = false;
+  $scope.codeBtnText = '获取验证码';
+  $scope.user = {};
+
+  $scope.sendCode = function(){
+    $scope.codeDisable = true;
+    $scope.codeBtnText = time + '秒';
+    time--;
+    var intervalId = $interval(function(){
+      $scope.codeBtnText = time + '秒';
+      time--;
+      if(time === -1){
+        $interval.cancel(intervalId);
+        $scope.codeBtnText = '获取验证码';
+        time = 60;
+        $scope.codeDisable = false;
+      }
+    }, 1000);
+    SignUpService.signUp($scope.user.phone, $scope.user.home, $scope.user.company).then(function(msg){
+      $ionicLoading.show({ template: msg, noBackdrop: true, duration: 1000 });
+    });
+  };
+  $scope.signUp = function(){
+    SignUpService.verify($scope.user.code).then(function(){
+      $ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 1000 });
+      $scope.user.code = '';
+      $rootScope.$broadcast('user.login');
+      $ionicHistory.goBack();
+    });
+  };
 }])
 
 
