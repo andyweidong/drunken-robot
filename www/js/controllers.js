@@ -1,8 +1,8 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', 'slider', function($scope, slider) {
-  slider('slider1_container');
+.controller('BbssCtrl', ['$scope', function($scope) {
+
   
 }])
 
