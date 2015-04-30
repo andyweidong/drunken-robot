@@ -96,10 +96,10 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'SetSystemCtrl'
   })
 
-  .state('cameraman-detail', {
-    url: '/cameraman/:cameramanId',
-    templateUrl: 'templates/cameraman-detail.html',
-    controller: 'CameramanDetailCtrl'
+  .state('order-confirm', {
+    url: '/order-confirm/:busId',
+    templateUrl: 'templates/order-confirm.html',
+    controller: 'OrderConfirmCtrl'
   })
 
   .state('chat', {

@@ -33,12 +33,41 @@ $bggray: #eeebe5 !default;
 
 .login-explain {
   text-align: center;
-}
-.login-explain a {
-  text-decoration: none;
-  color: $positive;
+  a {
+    text-decoration: none;
+    color: $positive;  
+  }
 }
 
-#l-map {
-  height: 100%;
+.item-book {
+  color: $light;
+  .price {
+    color: $assertive;
+    float: right;
+  }
+  .button-book {
+    float: right;
+  }
 }
+.card-book {
+  margin: 20px 0;
+}
+
+.pay-bar {
+  padding: 0 5px;
+  .button-block {
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-size: 18px;
+  }
+}
+.total-price {
+  font-size: 18px;
+}
+.price {
+  color: $assertive;
+}
+
+
+
+

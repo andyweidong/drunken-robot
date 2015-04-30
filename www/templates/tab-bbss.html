@@ -3,50 +3,22 @@
     
   </ion-nav-buttons>
   <ion-content class="gray-bg" scroll="false">
-    <div class="row">
-      <h3>上班订票</h3>
-    </div>
-    <div class="row">
-      <p>出发时间：3月5号</p>
-    </div>
-    <div class="row">
-      <p>下车地点：常熟路333号</p>
-    </div>
-    <div class="row">
-      <P>上车地点：东川路555号</P>
-    </div>
-    <div class="row">
-      <div class="col">发车时间</div>
-      <div class="col">到达时间</div>
-      <div class="col"></div>
+    <div class="card card-book">
+      <h3 class="item">上班订票</h3>
+      <div class="item">
+        <p class="">出发日期：3月5号</p>
+        <p class="">下车地点：徐汇区常熟路333号 新凯家园南门</p>
+        <P class="">上车地点：闵行区东川路555号 1号楼</P>
+        <P class="">订票截止时间: 02：00</P>
+      </div>
+      
     </div>
 
-    <div class="row">
-      <div class="col">08：50</div>
-      <div class="col">09：50</div>
-      <div class="col">
-        <button class="button button-positive">
-          订票
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">08：50</div>
-      <div class="col">09：50</div>
-      <div class="col">
-        <button class="button button-positive">
-          订票
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">08：50</div>
-      <div class="col">09：50</div>
-      <div class="col">
-        <button class="button button-positive">
-          订票
-        </button>
-      </div>
+    <div class="list">
+      <a class="item item-book" href="#/order-confirm/{{item.id}}" ng-repeat="item in list">
+        <p><span>{{item.startTime}}出发</span><span class="price">{{item.price}}</span></p>
+        <p><span>预计{{item.arrivalTime}}到达</span><button class="button button-small button-positive button-book">订票</button></p>
+      </a>
     </div>
     
 

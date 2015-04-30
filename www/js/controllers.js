@@ -2,12 +2,27 @@ angular.module('drunken.controllers', [])
 
 
 .controller('BbssCtrl', ['$scope', function($scope) {
-
+  $scope.list = [{
+    id:1,
+    startTime: '07:30',
+    arrivalTime: '09:00',
+    price: '15￥'
+  },{
+    id:2,
+    startTime: '08:30',
+    arrivalTime: '10:00',
+    price: '15￥'
+  },{
+    id:3,
+    startTime: '09:30',
+    arrivalTime: '10:30',
+    price: '15￥'
+  }];
   
 }])
 
 
-.controller('SetAddressCtrl', ['$scope', function($scope) {
+.controller('OrderConfirmCtrl', ['$scope', function($scope) {
   
 }])
 

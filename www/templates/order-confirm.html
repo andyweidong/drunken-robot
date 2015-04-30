@@ -1,0 +1,46 @@
+<ion-view view-title="确认支付">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" ng-click="$ionicGoBack($event)"><i class="ion-arrow-left-c"></i></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <!-- <a class="button button-clear" >计费规则</a> -->
+  </ion-nav-buttons>
+  <ion-content class="">
+    <div class="card">
+      <div class="item item-divider">
+        车票信息:
+      </div>
+      <div class="item item-text-wrap">
+        3:30
+      </div>
+      <div class="item item-divider text-right">
+        应付：<span class="price">￥33.00</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider">早餐预定</div>
+      <div class="item item-text-wrap">
+        <p>肯德基</p>
+        <p>麦当劳</p>
+      </div>
+      <div class="item item-divider text-right">
+        应付：<span class="price">￥33.00</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider">支付方式</div>
+      <div class="item item-text-wrap">
+        <p>支付宝</p>
+        <p>微信</p>
+      </div>
+    </div>
+    <p class="total-price text-center">
+      总计：<span class="price">￥55</span>
+    </p>
+
+
+  </ion-content>
+  <div class="bar bar-footer pay-bar">
+    <button class="button button-block button-positive">确认支付</button>
+  </div>
+</ion-view>

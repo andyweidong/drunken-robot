@@ -7608,10 +7608,30 @@ a.button {
 
 .login-explain {
   text-align: center; }
+  .login-explain a {
+    text-decoration: none;
+    color: #f80; }
 
-.login-explain a {
-  text-decoration: none;
-  color: #f80; }
+.item-book {
+  color: #fff; }
+  .item-book .price {
+    color: #ef473a;
+    float: right; }
+  .item-book .button-book {
+    float: right; }
 
-#l-map {
-  height: 100%; }
+.card-book {
+  margin: 20px 0; }
+
+.pay-bar {
+  padding: 0 5px; }
+  .pay-bar .button-block {
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-size: 18px; }
+
+.total-price {
+  font-size: 18px; }
+
+.price {
+  color: #ef473a; }
