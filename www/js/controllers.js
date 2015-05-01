@@ -23,7 +23,13 @@ angular.module('drunken.controllers', [])
 
 
 .controller('OrderConfirmCtrl', ['$scope', function($scope) {
-  
+  $scope.breakfasts = [{
+    name: 'kfc 6 yuan ',
+    count: 0
+  },{
+    name: 'kfc 10 yuan ',
+    count: 0
+  }];
 }])
 
 

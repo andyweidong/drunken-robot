@@ -7635,3 +7635,30 @@ a.button {
 
 .price {
   color: #ef473a; }
+
+.pay-item .pay-icon {
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 10px; }
+
+.breakfast {
+  padding: 0; }
+
+quantity a {
+  text-decoration: none;
+  border: 1px solid #cacbcb;
+  color: #666;
+  height: 22px;
+  line-height: 20px;
+  width: 18px;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: center; }
+quantity input[type="text"] {
+  width: 42px;
+  height: 22px;
+  line-height: 22px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #cacbcb;
+  padding: 0; }

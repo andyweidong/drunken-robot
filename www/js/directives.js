@@ -43,4 +43,14 @@ angular.module('drunken.directives', [])
 	};
 }])
 
+.directive('quantity', function(){
+	return {
+		restrict: 'E',
+		scope: {
+			customerCount: '=count'
+		},
+		template: '<a href="javascript:;">-</a><input type="text" value="{{customerCount.count}}"><a href="javascript:;">+</a>'
+	};
+})
+
 ;
