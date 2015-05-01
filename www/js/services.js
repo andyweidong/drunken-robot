@@ -32,9 +32,8 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('LoginService', ['_q', 'user', function(_q, appUser){
+.factory('LoginService', ['_q', 'user', function(_q){
 
-  var type = 'login';
 
   return {
     sendCode: sendCode,
@@ -43,7 +42,7 @@ angular.module('drunken.services', [])
 
   function sendCode(phone){
     return _q(function(resolve, reject){
-      AV.Cloud.requestSmsCode(phone + '').then(function(){
+      AV.Cloud.requestLoginSmsCode(phone + '').then(function(){
         //发送成功
         resolve('发送成功!');
       }, function(err){
@@ -56,18 +55,62 @@ angular.module('drunken.services', [])
   function login(phone, code){
 
     return _q(function(resolve, reject){
+      AV.User.logInWithMobilePhoneSmsCode().then(function(user){
+        resolve(user);
+      }, function(err){
+        reject(err);
+      });
+    });
+  }
+
+}])
+
+.factory('SignUpService', ['_q', 'user', function(_q){
+  return {
+    signUp: signUp,
+    verify: verify,
+    reSendCode: reSendCode
+  };
+
+  function signUp(phone, home, company){
+    return _q(function(resolve, reject){
       var user = new AV.User();
-      user.signUpOrlogInWithMobilePhone({
-        mobilePhoneNumber: phone + '',
-        smsCode: code + ''
-      }, 
-      {
-        success:function(user){
-          resolve('登录成功!');
+      user.set('username', '' + phone);
+      user.set('home', home);
+      user.set('company', company);
+      user.setMobilePhoneNumber(phone + '');
+      user.signUp(null, {
+        success: function(user){
+          resolve('验证短信已经发送!');
         },
-        error: function(err){
-          reject(err);
+        error: function(user, error){
+          reject(error);
         }
+      })
+    });
+    
+  }
+
+  function verify(code){
+    return _q(function(resolve, reject){
+      AV.User.verifyMobilePhone(code + '').then(function(){
+        //验证成功
+        resolve('验证成功');
+      }, function(err){
+        //验证失败
+        reject(err);
+      });
+    });
+  }
+
+  function reSendCode(phone){
+    return _q(function(resolve, reject){
+      AV.User.requestMobilePhoneVerify(phone + '').then(function(){
+          //发送成功
+          resolve('发送成功');
+      }, function(err){
+         //发送失败
+         reject(err);
       });
     });
   }
@@ -153,16 +196,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('comment', ['$q', '$ionicLoading', 'user', function($q, $ionicLoading, appUser){
-  return {
-    create: create
-  };
 
-  function create(){
-
-  }
-
-}])
 
 .factory('imagePicker', ['$q', function($q){
   return {
@@ -194,12 +228,28 @@ angular.module('drunken.services', [])
         resolve(result);
       }, function(err){
         $ionicLoading.hide();
-        $ionicLoading.show({ template: error.msg ? error.msg : error.message, noBackdrop: true, duration: 1000 });
+        $ionicLoading.show({ template: err.msg ? err.msg : err.message, noBackdrop: true, duration: 1000 });
         reject(err);
       });
     });
   }
 }])
+
+.factory('loadScript', ['$q', function($q){
+  return function(src){
+    console.log('in loadScript');
+    return $q(function(resolve, reject){
+      var script = document.createElement('script');
+      script.onload = function() {
+        resolve();
+      };
+      script.src = src;
+      document.getElementsByTagName('head')[0].appendChild(script);
+    });
+  };
+}])
+
+
 
 ;
 

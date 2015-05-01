@@ -48,12 +48,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
-  .state('tab.cameramans', {
-    url: '/cameramans',
+  .state('tab.orderlists', {
+    url: '/orderlists',
     views: {
       'tab-location': {
-        templateUrl: 'templates/tab-cameramans.html',
-        controller: 'CameramansCtrl'
+        templateUrl: 'templates/tab-orderlists.html',
+        controller: 'OrderlistsCtrl'
       }
     }
   })
@@ -73,28 +73,33 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
   })
-
-  .state('bbs-detail', {
-    url: '/bbs/:bbsId',
-    templateUrl: 'templates/bbs-detail.html',
-    controller: 'BbsDetailCtrl'
-  })
-  .state('bbs-comment', {
-    url: '/bbs-comment/:bbsId',
-    templateUrl: 'templates/add-comment.html',
-    controller: 'BbsCommentCtrl'
+  .state('sign-up', {
+    url: '/sign-up',
+    templateUrl: 'templates/sign-up.html',
+    controller: 'SignUpCtrl'
   })
 
-  .state('createBbs', {
-    url: '/createBbs',
-    templateUrl: 'templates/create-bbs.html',
-    controller: 'CreateBbsCtrl'
+  .state('set-address', {
+    url: '/set-address',
+    templateUrl: 'templates/set-address.html',
+    controller: 'SetAddressCtrl'
+  })
+  .state('book-ticket', {
+    url: '/book-ticket',
+    templateUrl: 'templates/book-ticket.html',
+    controller: 'BookTicketCtrl'
   })
 
-  .state('cameraman-detail', {
-    url: '/cameraman/:cameramanId',
-    templateUrl: 'templates/cameraman-detail.html',
-    controller: 'CameramanDetailCtrl'
+  .state('set-system', {
+    url: '/set-system',
+    templateUrl: 'templates/set-system.html',
+    controller: 'SetSystemCtrl'
+  })
+
+  .state('order-confirm', {
+    url: '/order-confirm/:busId',
+    templateUrl: 'templates/order-confirm.html',
+    controller: 'OrderConfirmCtrl'
   })
 
   .state('chat', {

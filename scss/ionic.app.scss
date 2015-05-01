@@ -14,10 +14,60 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$positive:                        #ff6599 !default;
+$positive:                        #f80 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+
+
+//variable
+$bggray: #eeebe5 !default;
+
+//css
+.gray-bg {
+  background-color: $bggray;
+}
+
+.login-explain {
+  text-align: center;
+  a {
+    text-decoration: none;
+    color: $positive;  
+  }
+}
+
+.item-book {
+  color: $light;
+  .price {
+    color: $assertive;
+    float: right;
+  }
+  .button-book {
+    float: right;
+  }
+}
+.card-book {
+  margin: 20px 0;
+}
+
+.pay-bar {
+  padding: 0 5px;
+  .button-block {
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-size: 18px;
+  }
+}
+.total-price {
+  font-size: 18px;
+}
+.price {
+  color: $assertive;
+}
+
+
+
 
