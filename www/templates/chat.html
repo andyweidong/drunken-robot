@@ -6,15 +6,17 @@
   <!-- <ion-nav-buttons side="right">
     <button class="button button-clear" on-tap="addComment()"></button>
   </ion-nav-buttons> -->
-  <ion-content class="">
-    <div>--------</div>
-    <div>
-      <p ng-repeat="res in results">
-        {{res}}
-      </p>
+  <ion-content class="chat has-tabs">
+    <div class="list">
+      <div class="chat-item" ng-class="res.isSelf ? 'self': ''" ng-repeat="res in results">
+        <img src="{{res.img}}">
+        <p>Back off, man. I'm a scientist.</p>
+      </div>
     </div>
   </ion-content>
-  <div class="bar bar-footer bar-stable">
+  <div class="bar bar-footer bar-stable chat-bottom">
     <button class="button icon ion-image pull-left button-icon" on-tap="selectImg()"></button>
+    <input type="text">
+    <button class="button pull-right button-positive">发送</button>
   </div>
 </ion-view>

@@ -28,7 +28,7 @@
             <h2>{{breakfast.name}}</h2>
             <p class="quantity">
               <a ng-click="minu($index)" ng-class="breakfast.count === 0 ? 'disable': ''">-</a>
-              <input type="text" ng-model="breakfast.count">
+              <input type="text" ng-model="breakfast.count" disabled>
               <a ng-click="add($index)">+</a>
             </p>
           </div>

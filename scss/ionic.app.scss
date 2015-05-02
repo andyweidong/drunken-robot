@@ -15,6 +15,10 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 $positive:                        #f80 !default;
+
+$chatbg: #e6e6e6 !default;
+$chatborder: #f1f1f1 !default;
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
@@ -105,6 +109,77 @@ $bggray: #eeebe5 !default;
     padding:0;
   }
 }
+
+
+.pay-success {
+  text-align: center;
+  padding-top: 20px;
+  span {
+    color: $assertive;
+  }
+}
+.account-ticket {
+  margin-left: 0;
+  margin-right: 0;
+  span {
+    color: $assertive;
+  }
+}
+
+.chat {
+  background-color: $chatbg;
+  .list {
+    padding-left: 5px;
+    padding-right:5px;
+  }
+}
+
+.chat-bottom {
+  background-color: #fff;
+  input[type="text"] {
+    background-color: $chatbg;
+    border: 1px solid $chatborder;
+    padding: 2px 5px;
+    height: 34px;
+    line-height: 20px;
+    width: 71%;
+    font-size:14px;
+  }
+
+}
+.chat-item {
+  padding: 10px 10px 10px 50px;
+  position: relative;
+  &.self {
+    padding: 10px 50px 10px 10px;
+    text-align: right;
+    img {
+      right: 0;
+      left: auto;
+    }
+    p {
+      background-color: $positive;
+    }
+  }
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    position: absolute;
+    top:0px;
+    left: 0px;
+  }
+  p {
+    background-color: #fff;
+    padding:10px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: left;
+  }
+}
+
+
+
 
 
 

@@ -108,7 +108,16 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'ChatCtrl'
   })
 
-
+  .state('pay-success', {
+    url: '/pay-success',
+    templateUrl: 'templates/pay-success.html',
+    controller: 'PaySuccessCtrl'
+  })
+  .state('ticket-info', {
+    url: '/ticket-info',
+    templateUrl: 'templates/ticket-info.html',
+    controller: 'TicketInfoCtrl'
+  })
 
   ;
 
