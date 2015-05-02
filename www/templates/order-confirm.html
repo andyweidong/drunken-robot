@@ -16,7 +16,7 @@
         <P class="">上车地点：闵行区东川路555号 1号楼</P>
       </div>
       <div class="item item-divider text-right">
-        应付：<span class="price">￥33.00</span>
+        应付：<span class="price">￥{{ticketTotal}}</span>
       </div>
     </div>
     <div class="card">
@@ -26,12 +26,16 @@
           <div class="item item-avatar" ng-repeat="breakfast in breakfasts">
             <img src="img/kfc.png">
             <h2>{{breakfast.name}}</h2>
-            <p><quantity count="breakfast"></quantity>{{breakfast.count}}</p>
+            <p class="quantity">
+              <a ng-click="minu($index)" ng-class="breakfast.count === 0 ? 'disable': ''">-</a>
+              <input type="text" ng-model="breakfast.count">
+              <a ng-click="add($index)">+</a>
+            </p>
           </div>
         </div>
       </div>
       <div class="item item-divider text-right">
-        应付：<span class="price">￥33.00</span>
+        应付：<span class="price">￥{{breakfastTotal}}</span>
       </div>
     </div>
     <div class="card">
@@ -56,7 +60,7 @@
       </div>
     </div>
     <p class="total-price text-center">
-      总计：<span class="price">￥55</span>
+      总计：<span class="price">￥{{ticketTotal + breakfastTotal}}</span>
     </p>
   </ion-content>
   <div class="bar bar-footer pay-bar">

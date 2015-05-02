@@ -25,11 +25,27 @@ angular.module('drunken.controllers', [])
 .controller('OrderConfirmCtrl', ['$scope', function($scope) {
   $scope.breakfasts = [{
     name: 'kfc 6 yuan ',
-    count: 0
+    count: 0,
+    unit: 6
   },{
     name: 'kfc 10 yuan ',
-    count: 0
+    count: 0,
+    unit: 10
   }];
+  $scope.add = function(index){
+    $scope.breakfasts[index].count ++;
+    $scope.breakfastTotal += $scope.breakfasts[index].unit;
+  };
+  $scope.minu = function(index){
+    if($scope.breakfasts[index].count === 0){
+      return;
+    }
+    $scope.breakfasts[index].count --;
+    $scope.breakfastTotal -= $scope.breakfasts[index].unit;
+  };
+
+  $scope.breakfastTotal = 0;
+  $scope.ticketTotal = 15;
 }])
 
 

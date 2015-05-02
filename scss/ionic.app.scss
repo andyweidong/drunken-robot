@@ -78,17 +78,22 @@ $bggray: #eeebe5 !default;
 .breakfast {
   padding:0;
 }
-quantity {
+.quantity {
+  text-align: right;
+  word-spacing: -5px;
   a {
     text-decoration: none;
     border: 1px solid #cacbcb;
-    color: #666;
+    color: $dark;
     height: 22px;
     line-height: 20px;
     width: 18px;
     display: inline-block;
     vertical-align: bottom;
     text-align: center;
+    &.disable {
+      color: #e9e9e9;
+    }
   }
   input[type="text"] {
     width: 42px;
