@@ -43,4 +43,5 @@ angular.module('drunken.directives', [])
 	};
 }])
 
+
 ;

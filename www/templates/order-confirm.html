@@ -5,42 +5,63 @@
   <ion-nav-buttons side="right">
     <!-- <a class="button button-clear" >计费规则</a> -->
   </ion-nav-buttons>
-  <ion-content class="">
+  <ion-content class="scroll has-tabs">
     <div class="card">
       <div class="item item-divider">
         车票信息:
       </div>
       <div class="item item-text-wrap">
-        <p class="">出发日期：3月5号 08:00</p>
+        <p class="">出发时间：3月5号 08:00</p>
         <p class="">下车地点：徐汇区常熟路333号 新凯家园南门</p>
         <P class="">上车地点：闵行区东川路555号 1号楼</P>
       </div>
       <div class="item item-divider text-right">
-        应付：<span class="price">￥33.00</span>
+        应付：<span class="price">￥{{ticketTotal}}</span>
       </div>
     </div>
     <div class="card">
       <div class="item item-divider">早餐预定</div>
-      <div class="item item-text-wrap">
-        <p>肯德基</p>
-        <p>麦当劳</p>
+      <div class="item item-text-wrap breakfast">
+        <div class="list ">
+          <div class="item item-avatar" ng-repeat="breakfast in breakfasts">
+            <img src="img/kfc.png">
+            <h2>{{breakfast.name}}</h2>
+            <p class="quantity">
+              <a ng-click="minu($index)" ng-class="breakfast.count === 0 ? 'disable': ''">-</a>
+              <input type="text" ng-model="breakfast.count" disabled>
+              <a ng-click="add($index)">+</a>
+            </p>
+          </div>
+        </div>
       </div>
       <div class="item item-divider text-right">
-        应付：<span class="price">￥33.00</span>
+        应付：<span class="price">￥{{breakfastTotal}}</span>
       </div>
     </div>
     <div class="card">
       <div class="item item-divider">支付方式</div>
       <div class="item item-text-wrap">
-        <p>支付宝</p>
-        <p>微信</p>
+        <div class="list">
+          <label class="item item-radio pay-item">
+            <input type="radio" name="group" checked="checked">
+            <div class="item-content">
+              <img class="pay-icon" src="/img/zhifubao.png">支付宝
+            </div>
+            <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-radio pay-item">
+            <input type="radio" name="group">
+            <div class="item-content">
+              <img class="pay-icon" src="/img/weixin.png">weixin
+            </div>
+            <i class="radio-icon ion-checkmark"></i>
+          </label>
+        </div>
       </div>
     </div>
     <p class="total-price text-center">
-      总计：<span class="price">￥55</span>
+      总计：<span class="price">￥{{ticketTotal + breakfastTotal}}</span>
     </p>
-
-
   </ion-content>
   <div class="bar bar-footer pay-bar">
     <button class="button button-block button-positive">确认支付</button>
