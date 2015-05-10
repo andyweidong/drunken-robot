@@ -1,14 +1,29 @@
 angular.module('drunken.services', [])
 
-.factory('user', [function(){
+.factory('user', ['_q', function(_q){
 
   return {
     isLogin: isLogin,
     get: get,
     exit: exit,
     id: id,
-    current: current
+    current: current,
+    saveAddr: saveAddr
   };
+
+  function saveAddr(home, company){
+    return _q(function(resolve, reject){
+      var user = current();
+      user.set('homeAddr', home);
+      user.set('companyAddr', company);
+      user.save().then(function(){
+        resolve('保存成功');
+      }, function(err){
+        reject(err);
+      });
+    });
+
+  }
 
   function isLogin(){
     return AV.User.current() ? true : false;
@@ -42,7 +57,7 @@ angular.module('drunken.services', [])
 
   function sendCode(phone){
     return _q(function(resolve, reject){
-      AV.Cloud.requestLoginSmsCode(phone + '').then(function(){
+      AV.User.requestLoginSmsCode(phone + '').then(function(){
         //发送成功
         resolve('发送成功!');
       }, function(err){
@@ -55,7 +70,7 @@ angular.module('drunken.services', [])
   function login(phone, code){
 
     return _q(function(resolve, reject){
-      AV.User.logInWithMobilePhoneSmsCode().then(function(user){
+      AV.User.logInWithMobilePhoneSmsCode(phone + '', code + '').then(function(user){
         resolve(user);
       }, function(err){
         reject(err);
@@ -69,24 +84,39 @@ angular.module('drunken.services', [])
   return {
     signUp: signUp,
     verify: verify,
-    reSendCode: reSendCode
+    sendCode: sendCode
   };
 
-  function signUp(phone, home, company){
+  function signUp(phone, code, home, company){
     return _q(function(resolve, reject){
       var user = new AV.User();
-      user.set('username', '' + phone);
-      user.set('home', home);
-      user.set('company', company);
-      user.setMobilePhoneNumber(phone + '');
-      user.signUp(null, {
+      user.signUpOrlogInWithMobilePhone({
+        mobilePhoneNumber: phone+ '',
+        smsCode: code + '',
+        username: phone + '',
+        companyAddr: company,
+        homeAddr: home
+      }, {
         success: function(user){
-          resolve('验证短信已经发送!');
+          resolve('注册成功');
         },
-        error: function(user, error){
-          reject(error);
+        error: function(err){
+          reject(err);
         }
-      })
+      });
+      // user.set('username', '' + phone);
+      // user.set('homeAddr', home);
+      // user.set('companyAddr', company);
+      // user.set('type', 1);
+      // user.setMobilePhoneNumber(phone + '');
+      // user.signUp(null, {
+      //   success: function(user){
+      //     resolve('验证短信已经发送!');
+      //   },
+      //   error: function(user, error){
+      //     reject(error);
+      //   }
+      // })
     });
     
   }
@@ -103,9 +133,9 @@ angular.module('drunken.services', [])
     });
   }
 
-  function reSendCode(phone){
+  function sendCode(phone){
     return _q(function(resolve, reject){
-      AV.User.requestMobilePhoneVerify(phone + '').then(function(){
+      AV.Cloud.requestSmsCode(phone + '').then(function(){
           //发送成功
           resolve('发送成功');
       }, function(err){
@@ -117,7 +147,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('Bbss', ['$q', '_q', 'user', '$ionicLoading', function($q, _q, user, $ionicLoading) {
+.factory('ShuttleShift', ['_q', 'user', function(_q, user) {
 
   var bbsCache = [];
   var maxIdIndex = 0;
@@ -225,10 +255,13 @@ angular.module('drunken.services', [])
     return $q(function(resolve, reject){
       $q(fn).then(function(result){
         $ionicLoading.hide();
+        if(typeof result === 'string'){
+          $ionicLoading.show({ template: result, noBackdrop: true, duration: 1000 });
+        }
         resolve(result);
       }, function(err){
         $ionicLoading.hide();
-        $ionicLoading.show({ template: err.msg ? err.msg : err.message, noBackdrop: true, duration: 1000 });
+        $ionicLoading.show({ template: err.msg ? err.msg : err.message, noBackdrop: true, duration: 4000 });
         reject(err);
       });
     });

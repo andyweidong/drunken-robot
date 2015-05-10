@@ -1,7 +1,8 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', function($scope) {
+.controller('BbssCtrl', ['$scope', 'user', function($scope, user) {
+
   $scope.list = [{
     id:1,
     startTime: '07:30',
@@ -77,7 +78,7 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('LoginCtrl', ['$scope', '$interval', '$ionicLoading', 'LoginService', '$ionicHistory', '$rootScope', 'user', function($scope, $interval, $ionicLoading, LoginService, $ionicHistory, $rootScope, user){
+.controller('LoginCtrl', ['$scope', '$interval', '$ionicLoading', 'LoginService', '$state', '$rootScope', 'user', function($scope, $interval, $ionicLoading, LoginService, $state, $rootScope, user){
 	var time = 60;
 	$scope.codeDisable = false;
 	$scope.codeBtnText = '获取验证码';
@@ -98,20 +99,20 @@ angular.module('drunken.controllers', [])
 			}
 		}, 1000);
 		LoginService.sendCode($scope.user.phone).then(function(msg){
-			$ionicLoading.show({ template: msg, noBackdrop: true, duration: 1000 });
+			
 		});
 	};
 	$scope.login = function(){
     LoginService.login($scope.user.phone, $scope.user.code).then(function(){
-    	$ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 1000 });
+    	
     	$scope.user.code = '';
     	$rootScope.$broadcast('user.login');
-    	$ionicHistory.goBack();
+    	$state.go('tab.bbss');
     });
 	};
 }])
 
-.controller('SignUpCtrl', ['$scope', '$interval', '$ionicLoading', 'SignUpService', '$ionicHistory', '$rootScope', 'user', function($scope, $interval, $ionicLoading, SignUpService, $ionicHistory, $rootScope, user){
+.controller('SignUpCtrl', ['$scope', '$interval', '$ionicLoading', 'SignUpService', '$state', '$rootScope', 'user', function($scope, $interval, $ionicLoading, SignUpService, $state, $rootScope, user){
   var time = 60;
   $scope.codeDisable = false;
   $scope.codeBtnText = '获取验证码';
@@ -131,16 +132,15 @@ angular.module('drunken.controllers', [])
         $scope.codeDisable = false;
       }
     }, 1000);
-    SignUpService.signUp($scope.user.phone, $scope.user.home, $scope.user.company).then(function(msg){
-      $ionicLoading.show({ template: msg, noBackdrop: true, duration: 1000 });
+    SignUpService.sendCode($scope.user.phone).then(function(msg){
+      
     });
   };
   $scope.signUp = function(){
-    SignUpService.verify($scope.user.code).then(function(){
-      $ionicLoading.show({ template: '登录成功!', noBackdrop: true, duration: 1000 });
+    SignUpService.signUp($scope.user.phone, $scope.user.code, $scope.user.home, $scope.user.company).then(function(){
       $scope.user.code = '';
       $rootScope.$broadcast('user.login');
-      $ionicHistory.goBack();
+      $state.go('tab.bbss');
     });
   };
 }])
@@ -272,6 +272,16 @@ angular.module('drunken.controllers', [])
 
 .controller('TicketInfoCtrl', ['$scope', function($scope){
 
+}])
+
+.controller('SetAddressCtrl', ['$scope', 'user', function($scope, user){
+  $scope.user = user.current();
+  console.dir($scope.user);
+  $scope.saveAddr = function(){
+    user.saveAddr($scope.user.attributes.homeAddr, $scope.user.attributes.companyAddr).then(function(msg){
+
+    });;
+  }
 }])
 
 ;

@@ -1,6 +1,6 @@
 angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives'])
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform', 'user', '$state', function($ionicPlatform, user, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -11,8 +11,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    if(!user.isLogin()){
+      $state.go('login');
+      console.log(1);
+    }
   });
-})
+}])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
@@ -20,7 +24,7 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
