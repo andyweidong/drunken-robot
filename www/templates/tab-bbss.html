@@ -6,7 +6,7 @@
     <div class="card card-book">
       <h3 class="item">上班订票</h3>
       <div class="item">
-        <p class="">出发日期：{{list[0].attributes.departureTime}}</p>
+        <p class="">出发日期：{{list[0].attributes.departureTime | oDateToStrDate}}</p>
         <p class="">上车地点：{{homeStation.attributes.name}}</p>
         <P class="">上车地点：{{companyStation.attributes.name}}</P>
         <P class="">订票截止时间: 02：00</P>
@@ -16,8 +16,8 @@
 
     <div class="list">
       <a class="item item-book" href="#/order-confirm/{{item.id}}" ng-repeat="item in list">
-        <p><span>{{item.attributes.departureTime}}出发</span><span class="price">{{line.attributes.price}}￥</span></p>
-        <p><span>预计{{item.attributes.arrivalTime}}到达</span><button class="button button-small button-positive button-book">订票</button></p>
+        <p><span>{{item.attributes.departureTime | oDateToStrTime}}出发</span><span class="price">{{line.attributes.price}}￥</span></p>
+        <p><span>预计{{item.attributes.arrivalTime | oDateToStrTime}}到达</span><button class="button button-small button-positive button-book">订票</button></p>
       </a>
     </div>
     

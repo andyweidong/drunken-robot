@@ -1,4 +1,4 @@
-angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives'])
+angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives', 'drunken.filters'])
 
 .run(['$ionicPlatform', 'user', '$state', function($ionicPlatform, user, $state) {
   $ionicPlatform.ready(function() {
