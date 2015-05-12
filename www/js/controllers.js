@@ -1,7 +1,22 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', 'user', function($scope, user) {
+.controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', 'TStation', function($scope, user, TShuttleShift, TLine, TStation) {
+  TShuttleShift.list().then(function(list){
+    console.log(list);
+    $scope.list = list;
+  });
+  TLine.getUserLine().then(function(line){
+    console.log(line);
+    $scope.line = line;
+  });
+  TStation.getUserHomeStation().then(function(station){
+    console.log(station);
+    $scope.homeStation = station;
+  });
+  TStation.getUserCompanyStation().then(function(station){
+    $scope.companyStation = station;
+  });
 
   $scope.list = [{
     id:1,

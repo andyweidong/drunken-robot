@@ -147,82 +147,98 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('ShuttleShift', ['_q', 'user', function(_q, user) {
-
-  var bbsCache = [];
-  var maxIdIndex = 0;
-
+.factory('TShuttleShift', ['_q', 'TLine', function(_q, TLine) {
   return {
-    list: list,
-    remove: remove,
-    get: get,
-    create: create,
-    bbsCache: bbsCache,
-    maxIdIndex: maxIdIndex
+    list: list
   };
 
-  function get(bbsId){
+
+  function list(){
     return _q(function(resolve, reject){
-      var bbs = new AV.Query('M_Bbs');
-      bbs.get(bbsId, {
-        success: function(bbs){
-          resolve(bbs);
-        },
-        error: function(object, error){
-          reject(error, object);
-        }
-      })
-    });
-  }
-
-  function remove(){
-
-  }
-
-  function create(title){
-    return _q(function(resolve, reject){
-      var Bbs = AV.Object.extend("M_Bbs");
-      var bbs = new Bbs();
-      bbs.set("userId", user.id());
-      bbs.set("bbs", title);
-      var acl = new AV.ACL(user.current());
-      acl.setPublicReadAccess(true);
-      bbs.set("ACL", acl);
-      bbs.save(null, {
-        success: function(bbs){
-          bbsCache.unshift(bbs);
-          maxIdIndex++;
-          resolve(bbs);
-        },
-        error: function(bbs, error){
-          reject(error, bbs);
-        }
-      });
-    });
-  }
-
-  function list(lastId, count){
-    return $q(function(resolve, reject){
-      var query = new AV.Query("M_Bbs");
-      query.greaterThan("autoincrement", lastId ? lastId : 0);
-      query.limit(count ? count : 20);
-      query.descending("autoincrement");
-      query.find({
-          success: function(results) {
-            if(results.length === 20){
-              bbsCache = [];
-            }
-            bbsCache.splice(0, maxIdIndex);
-            maxIdIndex = 0;
-            [].unshift.apply(bbsCache, results);
-            resolve(bbsCache);
+      TLine.getUserLine().then(function(line){
+        var query = AV.Relation.reverseQuery('T_Shuttle_Shift', 'lineNo', line);
+        query.find({
+          success:function(list) {
+            resolve(list);
           },
-          error: function(error) {
-            $ionicLoading.show({ template: error.message, noBackdrop: true, duration: 1000 });
+          error: function(err){
+            reject(err);
           }
+        });
       });
     });
   }
+}])
+
+.factory('TStation', ['_q', 'user', function(_q, user){
+  return {
+    getUserHomeStation: getUserHomeStation,
+    getUserCompanyStation: getUserCompanyStation
+  };
+
+  function getUserHomeStation(){
+
+    return _q(function(resolve, reject){
+      var cUser = user.current();
+      var relation = cUser.relation('homeStation');
+      relation.query().find({
+        success: function(list){
+          resolve(list[0]);
+        },
+        error: function(err){
+          reject(err);
+        }
+      });
+    });
+  }
+  function getUserCompanyStation(){
+
+    return _q(function(resolve, reject){
+      var cUser = user.current();
+      var relation = cUser.relation('companyStation');
+      relation.query().find({
+        success: function(list){
+          resolve(list[0]);
+        },
+        error: function(err){
+          reject(err);
+        }
+      });
+    });
+  }
+
+}])
+
+.factory('TLine', ['_q', 'TStation', function(_q, TStation){
+  return {
+    getUserLine: getUserLine
+  };
+
+  function getUserLine(){
+    return _q(function(resolve, reject){
+      TStation.getUserHomeStation().then(function(homeStation){
+        var query = new AV.Query('T_station');
+        query.get(homeStation.id, {
+          success: function(homeStation){
+            var relation = homeStation.relation('lineNo');
+            relation.query().find({
+              success: function(list){
+                resolve(list[0]);
+              },
+              error: function(err){
+                reject(err);
+              }
+            });
+          },
+          error: function(){
+
+          }
+        });
+
+      });
+    });
+  }
+
 
 }])
 
