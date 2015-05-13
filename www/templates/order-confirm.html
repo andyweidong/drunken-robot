@@ -11,9 +11,9 @@
         车票信息:
       </div>
       <div class="item item-text-wrap">
-        <p class="">出发时间：3月5号 08:00</p>
-        <p class="">下车地点：徐汇区常熟路333号 新凯家园南门</p>
-        <P class="">上车地点：闵行区东川路555号 1号楼</P>
+        <p class="">出发时间：{{tShuttleShift.attributes.departureTime | dateFormat:'MM月dd号 HH:mm'}}</p>
+        <p class="">下车地点：{{user.attributes.homeAddr}}</p>
+        <P class="">上车地点：{{user.attributes.companyAddr}}</P>
       </div>
       <div class="item item-divider text-right">
         应付：<span class="price">￥{{ticketTotal}}</span>
@@ -25,10 +25,10 @@
         <div class="list ">
           <div class="item item-avatar" ng-repeat="breakfast in breakfasts">
             <img src="img/kfc.png">
-            <h2>{{breakfast.name}}</h2>
+            <h2>{{breakfast.attributes.breakfastName}}</h2>
             <p class="quantity">
-              <a ng-click="minu($index)" ng-class="breakfast.count === 0 ? 'disable': ''">-</a>
-              <input type="text" ng-model="breakfast.count" disabled>
+              <a ng-click="minu($index)" ng-class="breakfast.attributes.count === 0 ? 'disable': ''">-</a>
+              <input type="text" ng-model="breakfast.attributes.count" disabled>
               <a ng-click="add($index)">+</a>
             </p>
           </div>
@@ -64,6 +64,6 @@
     </p>
   </ion-content>
   <div class="bar bar-footer pay-bar">
-    <button class="button button-block button-positive">确认支付</button>
+    <button class="button button-block button-positive" ng-click="createOrder()">确认支付</button>
   </div>
 </ion-view>

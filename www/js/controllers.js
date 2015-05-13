@@ -38,30 +38,32 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('OrderConfirmCtrl', ['$scope', function($scope) {
-  $scope.breakfasts = [{
-    name: 'kfc 6 yuan ',
-    count: 0,
-    unit: 6
-  },{
-    name: 'kfc 10 yuan ',
-    count: 0,
-    unit: 10
-  }];
+.controller('OrderConfirmCtrl', ['$scope', 'TBreakfastSet', '$stateParams', 'TShuttleShift', 'user', 'TTicketOrder', '$state', function($scope, TBreakfastSet, $stateParams, TShuttleShift, user, TTicketOrder, $state) {
+  TBreakfastSet.list().then(function(list){
+    $scope.breakfasts = list;
+  });
+  TShuttleShift.getById($stateParams.busId).then(function(item){
+    $scope.tShuttleShift = item;
+  });
+  $scope.user = user.current();
   $scope.add = function(index){
-    $scope.breakfasts[index].count ++;
-    $scope.breakfastTotal += $scope.breakfasts[index].unit;
+    $scope.breakfasts[index].attributes.count ++;
+    $scope.breakfastTotal += $scope.breakfasts[index].attributes.price;
   };
   $scope.minu = function(index){
-    if($scope.breakfasts[index].count === 0){
+    if($scope.breakfasts[index].attributes.count === 0){
       return;
     }
-    $scope.breakfasts[index].count --;
-    $scope.breakfastTotal -= $scope.breakfasts[index].unit;
+    $scope.breakfasts[index].attributes.count --;
+    $scope.breakfastTotal -= $scope.breakfasts[index].attributes.price;
   };
-
   $scope.breakfastTotal = 0;
   $scope.ticketTotal = 15;
+
+  $scope.createOrder = function(){
+    TTicketOrder.create();
+    $state.go('pay-success');
+  };
 }])
 
 
@@ -207,7 +209,10 @@ angular.module('drunken.controllers', [])
 
 }])
 
-.controller('ChatCtrl', ['$scope', 'imagePicker', function($scope, imagePicker) {
+.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', function($scope, imagePicker, $state) {
+  $scope.goIndex = function(){
+    $state.go('tab.bbss');
+  }
   $scope.results = [{
     content: '你好',
     name: 'lucy',
@@ -281,8 +286,10 @@ angular.module('drunken.controllers', [])
   };
 }])
 
-.controller('PaySuccessCtrl', ['$scope', function($scope) {
-  
+.controller('PaySuccessCtrl', ['$scope', '$state', function($scope, $state) {
+  $scope.goChat = function(){
+    $state.go('chat');
+  }
 }])
 
 .controller('TicketInfoCtrl', ['$scope', function($scope){

@@ -149,8 +149,23 @@ angular.module('drunken.services', [])
 
 .factory('TShuttleShift', ['_q', 'TLine', function(_q, TLine) {
   return {
-    list: list
+    list: list,
+    getById: getById
   };
+
+  function getById(id){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Shuttle_Shift');
+      query.get(id, {
+        success: function(item){
+          resolve(item);
+        },
+        error: function(error){
+          reject(error);
+        }
+      });
+    });
+  }
 
 
   function list(){
@@ -238,11 +253,44 @@ angular.module('drunken.services', [])
       });
     });
   }
-
-
 }])
 
+.factory('TBreakfastSet', ['_q', function(_q){
+  return {
+    list: list
+  }
 
+  function list(){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Breakfast_Set');
+      query.find({
+        success: function(list){
+          for(var item in list){
+            list[item].attributes.count = 0;
+            //item.attributes.count = 0;
+          }
+          resolve(list);
+        },
+        error: function(error){
+          reject(error);
+        }
+      });
+    });
+  }
+}])
+
+.factory('TTicketOrder', ['_q', function(_q){
+  return {
+    create: create
+  }
+  function create(ticketNo, userPhoneNo, type, price, paymentType){
+
+  }
+}])
+
+.factory('TBreakfastOrder', ['_q', function(_q){
+
+}])
 
 .factory('imagePicker', ['$q', function($q){
   return {
