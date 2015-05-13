@@ -19,4 +19,20 @@ angular.module('drunken.filters', [])
   }
 })
 
+.filter('dateFormat', function(){
+  return function(input, format){
+    if(input && input.getHours){
+      var out = format;
+      out = out.replace(/yyyy/, input.getUTCFullYear());
+      out = out.replace(/MM/, input.getMonth() + 1);
+      out = out.replace(/dd/, input.getDate());
+      out = out.replace(/HH/, input.getHours());
+      out = out.replace(/mm/, input.getMinutes());
+      out = out.replace(/ss/, input.getSeconds());
+      return out;
+    }
+  }
+})
+
+
 ;
