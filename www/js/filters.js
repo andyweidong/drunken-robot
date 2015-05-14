@@ -18,4 +18,14 @@ angular.module('drunken.filters', [])
   }
 })
 
+.filter('subString', function(){
+  return function(input, from, to){
+    if(input){
+      console.log(input)
+      return input.substring(from, to);
+    }
+    
+  }
+})
+
 ;

@@ -17,23 +17,6 @@ angular.module('drunken.controllers', [])
   TStation.getUserCompanyStation().then(function(station){
     $scope.companyStation = station;
   });
-
-  $scope.list = [{
-    id:1,
-    startTime: '07:30',
-    arrivalTime: '09:00',
-    price: '15￥'
-  },{
-    id:2,
-    startTime: '08:30',
-    arrivalTime: '10:00',
-    price: '15￥'
-  },{
-    id:3,
-    startTime: '09:30',
-    arrivalTime: '10:30',
-    price: '15￥'
-  }];
   
 }])
 
@@ -61,8 +44,29 @@ angular.module('drunken.controllers', [])
   $scope.ticketTotal = 15;
 
   $scope.createOrder = function(){
-    TTicketOrder.create();
-    $state.go('pay-success');
+    var ticketNo = $scope.tShuttleShift.attributes.shuttleSerialNo + parseInt(Math.random() * 10000);
+    var userPhoneNo = $scope.user.attributes.mobilePhoneNumber
+    var breakfastOrders = [];
+    for(var i = 0; i < $scope.breakfasts.length; i++){
+      if($scope.breakfasts[i].attributes.count > 0){
+        breakfastOrders[i] = {
+          userPhoneNo: userPhoneNo,
+          count: $scope.breakfasts[i].attributes.count,
+          breakfastSetId: $scope.breakfasts[i].id,
+          totalPrice: $scope.breakfasts[i].attributes.count * $scope.breakfasts[i].attributes.price
+        }
+      }
+    }
+    TTicketOrder.create({
+      ticketNo: ticketNo, 
+      userPhoneNo: userPhoneNo, 
+      type: 0,//0上班，1下班
+      price: $scope.ticketTotal,
+      paymentType: 0//0alipay, 1weixin
+    },breakfastOrders).then(function(ticketOrder){
+      $state.go('pay-success', {orderId: ticketOrder.id});  
+    });
+    
   };
 }])
 
@@ -209,7 +213,8 @@ angular.module('drunken.controllers', [])
 
 }])
 
-.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', function($scope, imagePicker, $state) {
+.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', function($scope, imagePicker, $state, $stateParams) {
+  //$stateParams.shuttleShift
   $scope.goIndex = function(){
     $state.go('tab.bbss');
   }
@@ -286,9 +291,12 @@ angular.module('drunken.controllers', [])
   };
 }])
 
-.controller('PaySuccessCtrl', ['$scope', '$state', function($scope, $state) {
+.controller('PaySuccessCtrl', ['$scope', '$state', 'TTicketOrder', '$stateParams', function($scope, $state, TTicketOrder, $stateParams) {
+  TTicketOrder.getById($stateParams.orderId).then(function(ticketOrder){
+    $scope.ticketOrder = ticketOrder;
+  });
   $scope.goChat = function(){
-    $state.go('chat');
+    $state.go('chat', {shuttleShift: ticketOrder.attributes.ticketNo.substring(0, 19)});
   }
 }])
 

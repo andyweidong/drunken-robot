@@ -279,17 +279,70 @@ angular.module('drunken.services', [])
   }
 }])
 
-.factory('TTicketOrder', ['_q', function(_q){
+.factory('TTicketOrder', ['_q', 'TBreakfastOrder', function(_q, TBreakfastOrder){
   return {
-    create: create
+    create: create,
+    getById: getById
   }
-  function create(ticketNo, userPhoneNo, type, price, paymentType){
+  function getById(id){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Ticket_Order');
+      query.get(id, {
+        success: function(item){
+          resolve(item);
+        },
+        error: function(error){
+          reject(error);
+        }
+      });
+    });
+  }
+  function create(ticketAttrs,breakfasts){//ticketNo, userPhoneNo, type, price, paymentType
+    return _q(function(resolve, reject){
+      var T_Ticket_Order = AV.Object.new('T_Ticket_Order');
+      T_Ticket_Order.save(ticketAttrs, {
+        success: function(ticketOrder){
+          if(breakfasts.length > 0){
+            TBreakfastOrder.create(breakfasts, ticketOrder.id).then(function(){
+              resolve(ticketOrder);  
+            }, function(err){
+              reject(err);
+            });
+          }else {
+            resolve(ticketOrder);  
+          }
+        },
+        error: function(ticketOrder, err){
+          reject(err);
+        }
+      });
 
+    });
   }
 }])
 
-.factory('TBreakfastOrder', ['_q', function(_q){
+.factory('TBreakfastOrder', ['$q', function($q){
+  return {
+    create: create
+  }
+  function create(breakfasts, ticketOrderNo){//ticketNo, userPhoneNo, type, price, paymentType
+    var promises = [];
+    angular.forEach(breakfasts, function(breakfast){
+      var deffered  = $q.defer();
+      var T_Breakfast_Order = AV.Object.new('T_Breakfast_Order');
+      breakfast.ticketNo = ticketOrderNo;
+      T_Breakfast_Order.save(breakfast, {
+        success: function(breakfast){
+          deffered.resolve(breakfast);
+        },
+        error: function(breakfast, err){
+          deffered.reject(err);
+        }
+      });
+    });
 
+    return $q.all(promises);
+  }
 }])
 
 .factory('imagePicker', ['$q', function($q){

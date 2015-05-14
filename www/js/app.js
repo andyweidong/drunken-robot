@@ -107,13 +107,13 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
   })
 
   .state('chat', {
-    url: '/chat',
+    url: '/chat/:shuttleShift',
     templateUrl: 'templates/chat.html',
     controller: 'ChatCtrl'
   })
 
   .state('pay-success', {
-    url: '/pay-success',
+    url: '/pay-success/:orderId',
     templateUrl: 'templates/pay-success.html',
     controller: 'PaySuccessCtrl'
   })
