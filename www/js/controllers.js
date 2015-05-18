@@ -255,8 +255,11 @@ angular.module('drunken.controllers', [])
   }
 }])
 
-.controller('TicketInfoCtrl', ['$scope', function($scope){
-
+.controller('TicketInfoCtrl', ['$scope', '$stateParams', '$ionicLoading', function($scope, $stateParams, $ionicLoading){
+  //$stateParams.ticketId
+  $scope.cancelOrder = function(){
+    $ionicLoading.show({ template: '取消成功！', noBackdrop: true, duration: 2000 });
+  };
 }])
 
 .controller('SetAddressCtrl', ['$scope', 'user', function($scope, user){

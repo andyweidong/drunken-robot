@@ -123,7 +123,7 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'PaySuccessCtrl'
   })
   .state('ticket-info', {
-    url: '/ticket-info',
+    url: '/ticket-info/:ticketId',
     templateUrl: 'templates/ticket-info.html',
     controller: 'TicketInfoCtrl'
   })

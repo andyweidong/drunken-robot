@@ -1,6 +1,6 @@
-<ion-view view-title="订单详情">
-  <ion-nav-buttons side="right" class="">
-    
+<ion-view view-title="订单详情" hide-back-button="true">
+  <ion-nav-buttons side="left" class="">
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
   <ion-content class="gray-bg has-tabs" scroll="false">
 
@@ -38,6 +38,6 @@
 
   </ion-content>
   <div class="bar bar-footer pay-bar">
-    <button class="button button-block button-positive">退票</button>
+    <button class="button button-block button-positive" ng-click="cancelOrder()">退票</button>
   </div>
 </ion-view>

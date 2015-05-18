@@ -1,10 +1,10 @@
 <ion-view view-title="我的订单" hide-back-button="true">
   <ion-nav-buttons side="left">
-    <button class="button button-clear" ng-click="$ionicGoBack($event)"><i class="ion-arrow-left-c"></i></button>
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
   <ion-content>
     <div class="list">
-      <a class="item item-avatar" href="#" ng-repeat="item in list">
+      <a class="item item-avatar" href="#/ticket-info/a" ng-repeat="item in list">
         <img ng-src="{{item.img}}">
         <h2>车票号：{{item.no}}</h2>
         <p>{{item.status}}</p>
