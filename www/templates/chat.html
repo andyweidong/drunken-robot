@@ -10,13 +10,13 @@
     <div class="list">
       <div class="chat-item" ng-class="res.isSelf ? 'self': ''" ng-repeat="res in results">
         <img src="{{res.img}}">
-        <p>Back off, man. I'm a scientist.</p>
+        <p>{{res.content}}</p>
       </div>
     </div>
   </ion-content>
   <div class="bar bar-footer bar-stable chat-bottom">
     <button class="button icon ion-image pull-left button-icon" on-tap="selectImg()"></button>
-    <input type="text">
-    <button class="button pull-right button-positive">发送</button>
+    <input type="text" ng-model="content">
+    <button class="button pull-right button-positive" on-tap="send()">发送</button>
   </div>
 </ion-view>

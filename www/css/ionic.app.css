@@ -7721,3 +7721,6 @@ a.button {
     border-radius: 5px;
     display: inline-block;
     text-align: left; }
+
+.suggest-textarea {
+  height: 160px; }

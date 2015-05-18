@@ -1,6 +1,5 @@
-<ion-view view-title="注册">
+<ion-view view-title="注册完成" hide-back-button="true">
   <ion-nav-buttons side="left">
-    <!-- <button class="button button-clear" ng-click="$ionicGoBack($event)"><i class="ion-close"></i></button> -->
   </ion-nav-buttons>
   <ion-content class="padding gray-bg">
     <div class="list">
@@ -27,30 +26,7 @@
         </div>
         <div class="row">
           <div class="col">
-            手机号：
-          </div>
-        </div>
-        <div class="row">
-          <div class="col col-67">
-            <input type="number" placeholder="手机号" class="input-radius" ng-model="user.phone" name="nPhone" phone>
-          </div>
-          <div class="col ">
-            <button class="button button-positive button-block" style="margin:0;padding:0;" ng-disabled="form.nHome.$error.required || form.nCompany.$error.required || form.nPhone.$error.phone || codeDisable"  ng-bind="codeBtnText" on-tap="sendCode()"></button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            验证码：
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <input type="number" placeholder="验证码" class="input-radius" ng-model="user.code" name="nCode" code>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <button class="button button-block button-positive" ng-disabled="!(!form.nPhone.$error.phone && !form.nCode.$error.code && !form.nHome.$error.required && !form.nCompany.$error.required)" on-tap="signUp()">注册</button>
+            <button class="button button-block button-positive" ng-disabled="!(!form.nHome.$error.required && !form.nCompany.$error.required)" on-tap="signUp()">注册完成</button>
           </div>
         </div>
         <div class="login-explain">

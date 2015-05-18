@@ -47,8 +47,9 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('LoginService', ['_q', 'user', function(_q){
+.factory('LoginService', ['_q', 'user', function(_q, appUser){
 
+  var type = 'login';
 
   return {
     sendCode: sendCode,
@@ -57,7 +58,7 @@ angular.module('drunken.services', [])
 
   function sendCode(phone){
     return _q(function(resolve, reject){
-      AV.User.requestLoginSmsCode(phone + '').then(function(){
+      AV.Cloud.requestSmsCode(phone + '').then(function(){
         //发送成功
         resolve('发送成功!');
       }, function(err){
@@ -70,10 +71,18 @@ angular.module('drunken.services', [])
   function login(phone, code){
 
     return _q(function(resolve, reject){
-      AV.User.logInWithMobilePhoneSmsCode(phone + '', code + '').then(function(user){
-        resolve(user);
-      }, function(err){
-        reject(err);
+      var user = new AV.User();
+      user.signUpOrlogInWithMobilePhone({
+        mobilePhoneNumber: phone + '',
+        smsCode: code + ''
+      }, 
+      {
+        success:function(user){
+          resolve(user);
+        },
+        error: function(err){
+          reject(err);
+        }
       });
     });
   }
@@ -82,12 +91,10 @@ angular.module('drunken.services', [])
 
 .factory('SignUpService', ['_q', 'user', function(_q){
   return {
-    signUp: signUp,
-    verify: verify,
-    sendCode: sendCode
+    signUp: signUp
   };
 
-  function signUp(phone, code, home, company){
+  function signUp(home, company){
     return _q(function(resolve, reject){
       var user = new AV.User();
       user.signUpOrlogInWithMobilePhone({
@@ -104,46 +111,11 @@ angular.module('drunken.services', [])
           reject(err);
         }
       });
-      // user.set('username', '' + phone);
-      // user.set('homeAddr', home);
-      // user.set('companyAddr', company);
-      // user.set('type', 1);
-      // user.setMobilePhoneNumber(phone + '');
-      // user.signUp(null, {
-      //   success: function(user){
-      //     resolve('验证短信已经发送!');
-      //   },
-      //   error: function(user, error){
-      //     reject(error);
-      //   }
-      // })
     });
     
   }
 
-  function verify(code){
-    return _q(function(resolve, reject){
-      AV.User.verifyMobilePhone(code + '').then(function(){
-        //验证成功
-        resolve('验证成功');
-      }, function(err){
-        //验证失败
-        reject(err);
-      });
-    });
-  }
 
-  function sendCode(phone){
-    return _q(function(resolve, reject){
-      AV.Cloud.requestSmsCode(phone + '').then(function(){
-          //发送成功
-          resolve('发送成功');
-      }, function(err){
-         //发送失败
-         reject(err);
-      });
-    });
-  }
 
 }])
 
@@ -387,7 +359,6 @@ angular.module('drunken.services', [])
 
 .factory('loadScript', ['$q', function($q){
   return function(src){
-    console.log('in loadScript');
     return $q(function(resolve, reject){
       var script = document.createElement('script');
       script.onload = function() {

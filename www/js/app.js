@@ -13,7 +13,6 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     }
     if(!user.isLogin()){
       $state.go('login');
-      console.log(1);
     }
   });
 }])
@@ -52,12 +51,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
-  .state('tab.orderlists', {
-    url: '/orderlists',
+  .state('tab.chat-rooms', {
+    url: '/chat-rooms',
     views: {
-      'tab-location': {
-        templateUrl: 'templates/tab-orderlists.html',
-        controller: 'OrderlistsCtrl'
+      'chat-rooms': {
+        templateUrl: 'templates/chat-rooms.html',
+        controller: 'ChatRoomsCtrl'
       }
     }
   })
@@ -112,6 +111,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     controller: 'ChatCtrl'
   })
 
+  // .state('chat-rooms', {
+  //   url: '/chat-rooms',
+  //   templateUrl: 'templates/chat-rooms.html',
+  //   controller: 'ChatRoomsCtrl'
+  // })
+
   .state('pay-success', {
     url: '/pay-success/:orderId',
     templateUrl: 'templates/pay-success.html',
@@ -121,6 +126,18 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     url: '/ticket-info',
     templateUrl: 'templates/ticket-info.html',
     controller: 'TicketInfoCtrl'
+  })
+
+  .state('suggest', {
+    url: '/suggest',
+    templateUrl: 'templates/suggest.html',
+    controller: 'SuggestCtrl'
+  })
+
+  .state('order-list', {
+    url: '/order-list',
+    templateUrl: 'templates/order-list.html',
+    controller: 'OrderListCtrl'
   })
 
   ;

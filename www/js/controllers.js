@@ -3,15 +3,12 @@ angular.module('drunken.controllers', [])
 
 .controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', 'TStation', function($scope, user, TShuttleShift, TLine, TStation) {
   TShuttleShift.list().then(function(list){
-    console.log(list);
     $scope.list = list;
   });
   TLine.getUserLine().then(function(line){
-    console.log(line);
     $scope.line = line;
   });
   TStation.getUserHomeStation().then(function(station){
-    console.log(station);
     $scope.homeStation = station;
   });
   TStation.getUserCompanyStation().then(function(station){
@@ -124,11 +121,16 @@ angular.module('drunken.controllers', [])
 		});
 	};
 	$scope.login = function(){
-    LoginService.login($scope.user.phone, $scope.user.code).then(function(){
-    	
+    LoginService.login($scope.user.phone, $scope.user.code).then(function(user){
+    	$ionicLoading.show({ template: '登录成功', noBackdrop: true, duration: 1000 });
     	$scope.user.code = '';
     	$rootScope.$broadcast('user.login');
-    	$state.go('tab.bbss');
+      if(user.attributes.homeAddr){
+        $state.go('tab.bbss');
+      }else {
+        $state.go('sign-up');
+      }
+    	
     });
 	};
 }])
@@ -139,24 +141,7 @@ angular.module('drunken.controllers', [])
   $scope.codeBtnText = '获取验证码';
   $scope.user = {};
 
-  $scope.sendCode = function(){
-    $scope.codeDisable = true;
-    $scope.codeBtnText = time + '秒';
-    time--;
-    var intervalId = $interval(function(){
-      $scope.codeBtnText = time + '秒';
-      time--;
-      if(time === -1){
-        $interval.cancel(intervalId);
-        $scope.codeBtnText = '获取验证码';
-        time = 60;
-        $scope.codeDisable = false;
-      }
-    }, 1000);
-    SignUpService.sendCode($scope.user.phone).then(function(msg){
-      
-    });
-  };
+
   $scope.signUp = function(){
     SignUpService.signUp($scope.user.phone, $scope.user.code, $scope.user.home, $scope.user.company).then(function(){
       $scope.user.code = '';
@@ -213,79 +198,48 @@ angular.module('drunken.controllers', [])
 
 }])
 
+.controller('ChatRoomsCtrl', ['$scope', function($scope){
+  $scope.rooms = [{
+    img: 'img/avatar.jpg',
+    title: '群聊',
+    lastWords: '大家好'
+  }];
+}])
+
 .controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', function($scope, imagePicker, $state, $stateParams) {
   //$stateParams.shuttleShift
   $scope.goIndex = function(){
-    $state.go('tab.bbss');
+    $state.go('tab.chat-rooms');
   }
   $scope.results = [{
     content: '你好',
     name: 'lucy',
     img: 'img/avatar.jpg',
-    isSelf: true
+    isSelf: false
   }, {
     content: '我不好',
     name: 'lucy',
     img: 'img/avatar.jpg',
-    isSelf: true
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: true
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: true
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: true
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: true
-  }, {
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
     isSelf: false
   }];
+  $scope.send = function(){
+    if(!$scope.content){
+      return;
+    }
+    $scope.results.push({
+      content: $scope.content,
+      name: 'lucy',
+      img: 'img/avatar.jpg',
+      isSelf: true
+    });
+    $scope.content = '';
+  };
 	$scope.selectImg = function(){
     imagePicker.getPictures({
       maximumImagesCount: 1
     }).then(function(results){
       $scope.results = results;
     }, function(err){
-      console.dir(err);
       $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
     });
   };
@@ -296,7 +250,8 @@ angular.module('drunken.controllers', [])
     $scope.ticketOrder = ticketOrder;
   });
   $scope.goChat = function(){
-    $state.go('chat', {shuttleShift: ticketOrder.attributes.ticketNo.substring(0, 19)});
+    //$state.go('chat', {shuttleShift: ticketOrder.attributes.ticketNo.substring(0, 19)});
+    $state.go('chat', {shuttleShift: 'a'});
   }
 }])
 
@@ -306,12 +261,35 @@ angular.module('drunken.controllers', [])
 
 .controller('SetAddressCtrl', ['$scope', 'user', function($scope, user){
   $scope.user = user.current();
-  console.dir($scope.user);
   $scope.saveAddr = function(){
     user.saveAddr($scope.user.attributes.homeAddr, $scope.user.attributes.companyAddr).then(function(msg){
 
     });;
   }
 }])
+
+.controller('SuggestCtrl', ['$scope', '$ionicLoading', function($scope, $ionicLoading){
+  $scope.send = function(){
+    $ionicLoading.show({ template: '感谢您的建议！', noBackdrop: true, duration: 2000 });
+  }
+}])
+
+.controller('OrderListCtrl', ['$scope', function($scope){
+  $scope.list = [{
+    img: 'img/avatar.jpg',
+    no: '434',
+    status: '已使用'
+  }, {
+    img: 'img/avatar.jpg',
+    no: '5454',
+    status: '已使用'
+  }, {
+    img: 'img/avatar.jpg',
+    no: '56565',
+    status: '已使用'
+  }];
+}])
+
+
 
 ;
