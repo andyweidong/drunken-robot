@@ -11,9 +11,9 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    if(!user.isLogin()){
-      $state.go('login');
-    }
+    // if(!user.isLogin()){
+    //   $state.go('login');
+    // }
   });
 }])
 
@@ -86,11 +86,6 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     url: '/set-address',
     templateUrl: 'templates/set-address.html',
     controller: 'SetAddressCtrl'
-  })
-  .state('book-ticket', {
-    url: '/book-ticket',
-    templateUrl: 'templates/book-ticket.html',
-    controller: 'BookTicketCtrl'
   })
 
   .state('set-system', {

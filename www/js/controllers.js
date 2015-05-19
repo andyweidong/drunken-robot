@@ -1,22 +1,27 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', function($scope, user, TShuttleShift, TLine) {
-
-  TLine.getUserLine().then(function(line){
-    if(line){
-      $scope.line = line;
-      TShuttleShift.list().then(function(list){
-        $scope.list = list;
-      });
-    }else {
-      //没有符合用户的线路
-    }
-    
-  });
-
-  $scope.user = user.current();
-
+.controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', '$state', '$rootScope', function($scope, user, TShuttleShift, TLine, $state, $rootScope) {
+  if(!user.isLogin()){
+    $rootScope.$on('user.login', initIndex);
+    $state.go('login');
+  }else {
+    initIndex();
+  }
+  function initIndex(){
+    TLine.getUserLine().then(function(line){
+      if(line){
+        $scope.line = line;
+        TShuttleShift.list().then(function(list){
+          $scope.list = list;
+        });
+      }else {
+        //没有符合用户的线路
+      }
+      
+    });
+    $scope.user = user.current();
+  }
   
 }])
 
@@ -137,17 +142,12 @@ angular.module('drunken.controllers', [])
 	};
 }])
 
-.controller('SignUpCtrl', ['$scope', '$interval', '$ionicLoading', 'SignUpService', '$state', '$rootScope', 'user', function($scope, $interval, $ionicLoading, SignUpService, $state, $rootScope, user){
-  var time = 60;
-  $scope.codeDisable = false;
-  $scope.codeBtnText = '获取验证码';
+.controller('SignUpCtrl', ['$scope', 'SignUpService', '$state', function($scope, SignUpService, $state){
   $scope.user = {};
 
 
   $scope.signUp = function(){
-    SignUpService.signUp($scope.user.phone, $scope.user.code, $scope.user.home, $scope.user.company).then(function(){
-      $scope.user.code = '';
-      $rootScope.$broadcast('user.login');
+    SignUpService.signUp($scope.user.home, $scope.user.company).then(function(){
       $state.go('tab.bbss');
     });
   };
