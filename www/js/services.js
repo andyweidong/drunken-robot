@@ -157,71 +157,61 @@ angular.module('drunken.services', [])
   }
 }])
 
-.factory('TStation', ['_q', 'user', function(_q, user){
-  return {
-    getUserHomeStation: getUserHomeStation,
-    getUserCompanyStation: getUserCompanyStation
-  };
+// .factory('TStation', ['_q', 'user', function(_q, user){
+//   return {
+//     getUserHomeStation: getUserHomeStation,
+//     getUserCompanyStation: getUserCompanyStation
+//   };
 
-  function getUserHomeStation(){
+//   function getUserHomeStation(){
 
-    return _q(function(resolve, reject){
-      var cUser = user.current();
-      var relation = cUser.relation('homeStation');
-      relation.query().find({
-        success: function(list){
-          resolve(list[0]);
-        },
-        error: function(err){
-          reject(err);
-        }
-      });
-    });
-  }
-  function getUserCompanyStation(){
+//     return _q(function(resolve, reject){
+//       var cUser = user.current();
+//       var relation = cUser.relation('homeStation');
+//       relation.query().find({
+//         success: function(list){
+//           resolve(list[0]);
+//         },
+//         error: function(err){
+//           reject(err);
+//         }
+//       });
+//     });
+//   }
+//   function getUserCompanyStation(){
 
-    return _q(function(resolve, reject){
-      var cUser = user.current();
-      var relation = cUser.relation('companyStation');
-      relation.query().find({
-        success: function(list){
-          resolve(list[0]);
-        },
-        error: function(err){
-          reject(err);
-        }
-      });
-    });
-  }
+//     return _q(function(resolve, reject){
+//       var cUser = user.current();
+//       var relation = cUser.relation('companyStation');
+//       relation.query().find({
+//         success: function(list){
+//           resolve(list[0]);
+//         },
+//         error: function(err){
+//           reject(err);
+//         }
+//       });
+//     });
+//   }
 
-}])
+// }])
 
-.factory('TLine', ['_q', 'TStation', function(_q, TStation){
+.factory('TLine', ['_q', 'user', function(_q, user){
   return {
     getUserLine: getUserLine
   };
 
   function getUserLine(){
     return _q(function(resolve, reject){
-      TStation.getUserHomeStation().then(function(homeStation){
-        var query = new AV.Query('T_station');
-        query.get(homeStation.id, {
-          success: function(homeStation){
-            var relation = homeStation.relation('lineNo');
-            relation.query().find({
-              success: function(list){
-                resolve(list[0]);
-              },
-              error: function(err){
-                reject(err);
-              }
-            });
-          },
-          error: function(){
-
-          }
-        });
-
+      var cUser = user.current();
+      var relation = cUser.relation('line');
+      relation.query().find({
+        success: function(list){
+          resolve(list[0]);
+        },
+        error: function(err){
+          reject(err);
+        }
       });
     });
   }
@@ -251,16 +241,36 @@ angular.module('drunken.services', [])
   }
 }])
 
-.factory('TTicketOrder', ['_q', 'TBreakfastOrder', function(_q, TBreakfastOrder){
+.factory('TTicketOrder', ['_q', 'TBreakfastOrder', 'user', function(_q, TBreakfastOrder, user){
   return {
     create: create,
-    getById: getById
+    getById: getById,
+    list: list
   }
+
+  function list(){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Ticket_Order');
+      query.include('tShuttleShift');
+      query.equalTo('user', user.current());
+      query.find({
+        success: function(orders){
+          resolve(orders);
+        },
+        error: function(err){
+          reject(err);
+        }
+      });
+    });
+  }
+
   function getById(id){
     return _q(function(resolve, reject){
       var query = new AV.Query('T_Ticket_Order');
+      query.include('tShuttleShift');
       query.get(id, {
         success: function(item){
+          console.log(item);
           resolve(item);
         },
         error: function(error){
@@ -269,13 +279,15 @@ angular.module('drunken.services', [])
       });
     });
   }
-  function create(ticketAttrs,breakfasts){//ticketNo, userPhoneNo, type, price, paymentType
+  function create(ticketAttrs, tShuttleShift, breakfasts){//ticketNo, userPhoneNo, type, price, paymentType
     return _q(function(resolve, reject){
       var T_Ticket_Order = AV.Object.new('T_Ticket_Order');
+      T_Ticket_Order.set('user', user.current());
+      T_Ticket_Order.set('tShuttleShift', tShuttleShift);
       T_Ticket_Order.save(ticketAttrs, {
         success: function(ticketOrder){
           if(breakfasts.length > 0){
-            TBreakfastOrder.create(breakfasts, ticketOrder.id).then(function(){
+            TBreakfastOrder.create(breakfasts, ticketOrder).then(function(){
               resolve(ticketOrder);  
             }, function(err){
               reject(err);
@@ -293,16 +305,36 @@ angular.module('drunken.services', [])
   }
 }])
 
-.factory('TBreakfastOrder', ['$q', function($q){
+.factory('TBreakfastOrder', ['_q', '$q', function(_q, $q){
   return {
-    create: create
+    create: create,
+    list: list
   }
+
+  function list(ticketNo){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Breakfast_Order');
+      query.equalTo('ticketNo', ticketNo);
+      query.include('breakfastSet');
+      query.find({
+        success: function(results){
+          resolve(results);
+        },
+        error: function(err){
+          reject(err);
+        }
+      });
+    });
+  }
+
   function create(breakfasts, ticketOrderNo){//ticketNo, userPhoneNo, type, price, paymentType
     var promises = [];
     angular.forEach(breakfasts, function(breakfast){
       var deffered  = $q.defer();
       var T_Breakfast_Order = AV.Object.new('T_Breakfast_Order');
-      breakfast.ticketNo = ticketOrderNo;
+      T_Breakfast_Order.set('ticketNo', ticketOrderNo);
+      T_Breakfast_Order.set('breakfastSet', breakfast.breakfastSet);
+      delete breakfast.breakfastSet;
       T_Breakfast_Order.save(breakfast, {
         success: function(breakfast){
           deffered.resolve(breakfast);

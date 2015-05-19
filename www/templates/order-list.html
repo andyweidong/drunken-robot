@@ -4,10 +4,10 @@
   </ion-nav-buttons>
   <ion-content>
     <div class="list">
-      <a class="item item-avatar" href="#/ticket-info/a" ng-repeat="item in list">
-        <img ng-src="{{item.img}}">
-        <h2>车票号：{{item.no}}</h2>
-        <p>{{item.status}}</p>
+      <a class="item item-avatar" href="#/ticket-info/{{item.id}}" ng-repeat="item in list">
+        <!-- <img ng-src=""> -->
+        <h2>车票号：{{item.attributes.ticketNo | subString:19:23}}</h2>
+        <p>订单状态：{{item.attributes.orderStatus | orderStatus}}</p>
       </a>
     </div>
   </ion-content>

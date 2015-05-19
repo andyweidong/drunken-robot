@@ -7,8 +7,8 @@
       <h3 class="item">上班订票</h3>
       <div class="item">
         <p class="">出发日期：{{list[0].attributes.departureTime | dateFormat:'MM月dd日'}}</p>
-        <p class="">上车地点：{{homeStation.attributes.name}}</p>
-        <P class="">上车地点：{{companyStation.attributes.name}}</P>
+        <p class="">上车地点：{{user.attributes.homeAddr}}</p>
+        <P class="">上车地点：{{user.attributes.companyAddr}}</P>
         <P class="">订票截止时间: 02：00</P>
       </div>
       

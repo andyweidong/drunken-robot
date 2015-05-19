@@ -1,19 +1,22 @@
 angular.module('drunken.controllers', [])
 
 
-.controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', 'TStation', function($scope, user, TShuttleShift, TLine, TStation) {
-  TShuttleShift.list().then(function(list){
-    $scope.list = list;
-  });
+.controller('BbssCtrl', ['$scope', 'user', 'TShuttleShift', 'TLine', function($scope, user, TShuttleShift, TLine) {
+
   TLine.getUserLine().then(function(line){
-    $scope.line = line;
+    if(line){
+      $scope.line = line;
+      TShuttleShift.list().then(function(list){
+        $scope.list = list;
+      });
+    }else {
+      //没有符合用户的线路
+    }
+    
   });
-  TStation.getUserHomeStation().then(function(station){
-    $scope.homeStation = station;
-  });
-  TStation.getUserCompanyStation().then(function(station){
-    $scope.companyStation = station;
-  });
+
+  $scope.user = user.current();
+
   
 }])
 
@@ -49,18 +52,17 @@ angular.module('drunken.controllers', [])
         breakfastOrders[i] = {
           userPhoneNo: userPhoneNo,
           count: $scope.breakfasts[i].attributes.count,
-          breakfastSetId: $scope.breakfasts[i].id,
+          breakfastSet: $scope.breakfasts[i],
           totalPrice: $scope.breakfasts[i].attributes.count * $scope.breakfasts[i].attributes.price
         }
       }
     }
     TTicketOrder.create({
       ticketNo: ticketNo, 
-      userPhoneNo: userPhoneNo, 
       type: 0,//0上班，1下班
       price: $scope.ticketTotal,
       paymentType: 0//0alipay, 1weixin
-    },breakfastOrders).then(function(ticketOrder){
+    }, $scope.tShuttleShift, breakfastOrders).then(function(ticketOrder){
       $state.go('pay-success', {orderId: ticketOrder.id});  
     });
     
@@ -157,43 +159,6 @@ angular.module('drunken.controllers', [])
 }])
 
 
-.controller('OrderlistsCtrl', ['$scope', function($scope){
-  $scope.cameramans = [{
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }, {
-    avatar: 'img/avatar.jpg',
-    times: 343,
-    name: '丽丽'
-  }];
-}])
-
-
 .controller('CameramanDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams){
 
 }])
@@ -245,18 +210,27 @@ angular.module('drunken.controllers', [])
   };
 }])
 
-.controller('PaySuccessCtrl', ['$scope', '$state', 'TTicketOrder', '$stateParams', function($scope, $state, TTicketOrder, $stateParams) {
+.controller('PaySuccessCtrl', ['$scope', '$state', 'TTicketOrder', '$stateParams', 'TBreakfastOrder', function($scope, $state, TTicketOrder, $stateParams, TBreakfastOrder) {
   TTicketOrder.getById($stateParams.orderId).then(function(ticketOrder){
     $scope.ticketOrder = ticketOrder;
+    TBreakfastOrder.list(ticketOrder).then(function(list){
+      $scope.breakfastList = list;
+    });
   });
   $scope.goChat = function(){
     //$state.go('chat', {shuttleShift: ticketOrder.attributes.ticketNo.substring(0, 19)});
-    $state.go('chat', {shuttleShift: 'a'});
+    $state.go('chat', {shuttleShift: $scope.ticketOrder.attributes.tShuttleShift.id});
   }
 }])
 
-.controller('TicketInfoCtrl', ['$scope', '$stateParams', '$ionicLoading', function($scope, $stateParams, $ionicLoading){
+.controller('TicketInfoCtrl', ['$scope', '$stateParams', '$ionicLoading', 'TTicketOrder', 'TBreakfastOrder', function($scope, $stateParams, $ionicLoading, TTicketOrder, TBreakfastOrder){
   //$stateParams.ticketId
+  TTicketOrder.getById($stateParams.ticketId).then(function(ticketOrder){
+    $scope.ticketOrder = ticketOrder;
+    TBreakfastOrder.list(ticketOrder).then(function(list){
+      $scope.breakfastList = list;
+    });
+  });
   $scope.cancelOrder = function(){
     $ionicLoading.show({ template: '取消成功！', noBackdrop: true, duration: 2000 });
   };
@@ -277,20 +251,11 @@ angular.module('drunken.controllers', [])
   }
 }])
 
-.controller('OrderListCtrl', ['$scope', function($scope){
-  $scope.list = [{
-    img: 'img/avatar.jpg',
-    no: '434',
-    status: '已使用'
-  }, {
-    img: 'img/avatar.jpg',
-    no: '5454',
-    status: '已使用'
-  }, {
-    img: 'img/avatar.jpg',
-    no: '56565',
-    status: '已使用'
-  }];
+.controller('OrderListCtrl', ['$scope', 'TTicketOrder', function($scope, TTicketOrder){
+  TTicketOrder.list().then(function(list){
+    $scope.list = list;
+    console.log(list);
+  });
 }])
 
 

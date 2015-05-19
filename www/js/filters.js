@@ -21,8 +21,18 @@ angular.module('drunken.filters', [])
 .filter('subString', function(){
   return function(input, from, to){
     if(input){
-      console.log(input)
       return input.substring(from, to);
+    }
+    
+  }
+})
+
+.filter('orderStatus', function(){
+  var status = ['未支付', '已支付', '已使用', '已退款'];
+  return function(input){
+    if(input >=0 && input <=3){
+      console.log(input);
+      return status[input];
     }
     
   }

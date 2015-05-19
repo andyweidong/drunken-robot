@@ -8,7 +8,7 @@
       <div class="item item-text-wrap pay-success">
 
         <h1> 
-          车票号：<span>5634</span>
+          车票号：<span>{{ticketOrder.attributes.ticketNo | subString:19:23}}</span>
         </h1>
       </div>
     </div>
@@ -17,14 +17,14 @@
       <div class="item item-divider">车票信息</div>
       <div class="item item-text-wrap">
         
-        <p>出发时间：3月5号 08:00</p>
-        <p class="">下车地点：徐汇区常熟路333号 新凯家园南门</p>
-        <P class="">上车地点：闵行区东川路555号 1号楼</P>
+        <p>出发时间：{{ticketOrder.attributes.tShuttleShift.attributes.departureTime | dateFormat:'MM月dd号 HH:mm'}}</p>
+        <p class="">下车地点：{{ticketOrder.attributes.tShuttleShift.attributes.fromAddr}}</p>
+        <P class="">上车地点：{{ticketOrder.attributes.tShuttleShift.attributes.toAddr}}</P>
       </div>
     </div>
-    <div class="card">
-      <div class="item item-text-wrap">
-        肯德基6元早餐1份
+    <div class="card" ng-show="breakfastList.length">
+      <div class="item item-text-wrap" ng-repeat="item in breakfastList">
+        {{item.attributes.breakfastSet.attributes.breakfastName}}{{item.attributes.count}}份
       </div>
     </div>
     <div class="card ">
