@@ -1,6 +1,6 @@
 angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives', 'drunken.filters'])
 
-.run(['$ionicPlatform', 'user', '$state', function($ionicPlatform, user, $state) {
+.run(['$ionicPlatform', 'user', '$state', 'chat', function($ionicPlatform, user, $state, chat) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -11,9 +11,10 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    // if(!user.isLogin()){
-    //   $state.go('login');
-    // }
+    if(user.isLogin()){
+      chat.init();
+      //TChatRoom.getRoomId();
+    }
   });
 }])
 

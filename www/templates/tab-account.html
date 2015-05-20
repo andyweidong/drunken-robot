@@ -13,18 +13,18 @@
 		    </a>
     	</div>
     </div>
-    <div class="card account-ticket">
+    <div class="card account-ticket" ng-show="ticketOrder">
       <div class="item item-text-wrap">
         <h1> 
-          车票号：<span>5634</span>
+          车票号：<span>{{ticketOrder.attributes.ticketNo | subString:19:23}}</span>
         </h1>
-        <p>出发时间：3月5号 08:00</p>
-        <p class="">下车地点：徐汇区常熟路333号 新凯家园南门</p>
-        <P class="">上车地点：闵行区东川路555号 1号楼</P>
+        <p>出发时间：{{ticketOrder.attributes.tShuttleShift.attributes.departureTime | dateFormat:'MM月dd号 HH:mm'}}</p>
+        <p class="">下车地点：{{ticketOrder.attributes.tShuttleShift.attributes.fromAddr}}</p>
+        <P class="">上车地点：{{ticketOrder.attributes.tShuttleShift.attributes.toAddr}}</P>
       </div>
       
     </div>
-  	<div class="list">
+  	<div class="list" style="margin-top:20px;">
 
   	  <a class="item item-icon-right" href="#/order-list">
   	    历史订单

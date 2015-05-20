@@ -245,7 +245,26 @@ angular.module('drunken.services', [])
   return {
     create: create,
     getById: getById,
-    list: list
+    list: list,
+    getUserLastOrder: getUserLastOrder 
+  }
+
+  function getUserLastOrder(){
+    return _q(function(resolve, reject){
+      var query = new AV.Query('T_Ticket_Order');
+      query.equalTo('user', user.current());
+      query.limit(1);
+      query.descending('createdAt');
+      query.include('tShuttleShift');
+      query.find({
+        success: function(orders){
+          resolve(orders[0]);
+        },
+        error: function(err){
+          reject(err);
+        }
+      });
+    });
   }
 
   function list(){
@@ -402,6 +421,193 @@ angular.module('drunken.services', [])
   };
 }])
 
+.factory('TChatRoom', ['$q', 'TTicketOrder', function($q, TTicketOrder){
+  return {
+    getRoomId: getRoomId,
+    create: create
+  };
+  function create(roomId){
+    return $q(function(resolve, reject){
+      TTicketOrder.getUserLastOrder().then(function(order){
+        var T_Chat_Room = AV.Object.new('T_Chat_Room');
+        T_Chat_Room.set('roomId', roomId);
+        T_Chat_Room.set('tShuttleShift', order.attributes.tShuttleShift);
+        T_Chat_Room.save({
+          success: function(){
+            resolve('成功');
+          },
+          error: function(){
+            reject('失败');
+          }
+        });
+      });
+
+    });
+  }
+
+  function getRoomId(){
+    return $q(function(resolve, reject){
+      TTicketOrder.getUserLastOrder().then(function(order){
+        console.log(order.attributes.tShuttleShift);
+
+        var query = new AV.Query('T_Chat_Room');
+        query.equalTo('tShuttleShift', order.attributes.tShuttleShift);
+        query.find({
+          success: function(results){
+            if(results.length > 0){
+              resolve(results[0].attributes.roomId);
+            }
+            resolve('');
+          },
+          error: function(err){
+            reject('');
+          }
+        });
+      });
+    });
+
+  }
+
+}])
+
+.factory('chat', ['$q', 'user', 'TChatRoom', 'TTicketOrder', function($q, user, TChatRoom, TTicketOrder){
+  var rt;
+  var firstFlag = true;
+  var conv;
+  var logFlag = false;
+  var msgTime;
+  var clientId;
+
+
+  return {
+    init: init,
+    getLog: getLog,
+    sendMsg: sendMsg
+  };
+
+  function init(){
+    TTicketOrder.getUserLastOrder().then(function(order){
+      console.log(order);
+
+      if(order){
+        clientId = user.current().id;
+        getRealtimeObj();
+      }
+    });
+  }
+
+  function sendMsg(val){
+    return $q(function(resolve, reject){
+      conv.send({
+        text: val
+      }, {
+        type: 'text'
+      }, function(data){
+        resolve(data);
+      });
+    });
+  }
+
+  function getLog(callback){
+    if(logFlag){
+      return;
+    }else {
+      logFlag = true;
+    }
+    conv.log({
+      t: msgTime
+    }, function(data){
+      logFlag = false;
+      var l = data.length;
+      if(l){
+        msgTime = data[0].timestamp;
+      }
+      if(callback){
+        callback(data);
+      }
+    });
+  }
+
+  function getRealtimeObj(){
+    console.log(clientId);
+    if(!rt){
+      rt = AV.realtime({
+        appId: av_id,
+        clientId: clientId,
+        encodeHTML: true
+      });
+      rt.on('open', function(){
+        console.log('实时通信服务建立成功！');
+        if(firstFlag){
+          firstFlag = false
+          TChatRoom.getRoomId().then(function(roomId){
+            if(roomId){
+              rt.room(roomId, function(object){
+                if(object){
+                  conv = object;
+                  conv.join(function(){
+
+                  });
+                  conv.receive(function(data){
+                    if(!msgTime){
+                      msgTime = data.timestamp;
+                    }
+                    console.log('接收到消息');
+                    console.log(data);
+                  });
+                }else {
+                  conv = rt.conv({
+                    members: [
+                      clientId
+                    ],
+                    name: 'aaaa',
+                    attr: {
+                      name: '房间1'
+                    }
+                  }, function(data){
+                    if(data){
+                      console.log('Conversation 创建成功!', data);
+                      TChatRoom.create(data.id);
+                      conv = data;
+                    }
+                  });
+                }
+              });
+            }else {
+              conv = rt.conv({
+                members: [
+                  clientId
+                ],
+                name: 'aaaa',
+                attr: {
+                  name: '房间1'
+                }
+              }, function(data){
+                if(data){
+                  console.log('Conversation 创建成功!', data);
+                  TChatRoom.create(data.id);
+                  conv = data;
+                }
+              });
+            }
+
+          });
+        }
+      });
+
+      rt.on('reuse', function(){
+
+      });
+
+      rt.on('error', function(){
+
+      });
+
+    }
+    return rt
+  }
+
+}]);
 
 
 ;

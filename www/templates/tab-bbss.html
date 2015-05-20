@@ -3,7 +3,7 @@
     
   </ion-nav-buttons>
   <ion-content class="gray-bg" scroll="false">
-    <div class="card card-book">
+    <div class="card card-book" ng-show="hasLine">
       <h3 class="item">上班订票</h3>
       <div class="item">
         <p class="">出发日期：{{list[0].attributes.departureTime | dateFormat:'MM月dd日'}}</p>
@@ -14,11 +14,20 @@
       
     </div>
 
-    <div class="list">
+    <div class="list" ng-show="hasLine">
       <a class="item item-book" href="#/order-confirm/{{item.id}}" ng-repeat="item in list">
         <p><span>{{item.attributes.departureTime | dateFormat:'HH:mm'}}出发</span><span class="price">{{line.attributes.price}}￥</span></p>
         <p><span>预计{{item.attributes.arrivalTime | dateFormat:'HH:mm'}}到达</span><button class="button button-small button-positive button-book">订票</button></p>
       </a>
+    </div>
+    <div class="card card-book" ng-show="!hasLine">
+      <h3 class="item">没有适合您的线路</h3>
+      <div class="item">
+        <p class=""></p>
+        <p class="">上车地点：{{user.attributes.homeAddr}}</p>
+        <P class="">上车地点：{{user.attributes.companyAddr}}</P>
+      </div>
+      
     </div>
     
 

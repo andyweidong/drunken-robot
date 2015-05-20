@@ -3,12 +3,17 @@
     <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
   <ion-content>
-    <div class="list">
+    <div class="list" ng-show="list.length">
       <a class="item item-avatar" href="#/ticket-info/{{item.id}}" ng-repeat="item in list">
         <!-- <img ng-src=""> -->
         <h2>车票号：{{item.attributes.ticketNo | subString:19:23}}</h2>
         <p>订单状态：{{item.attributes.orderStatus | orderStatus}}</p>
       </a>
+    </div>
+    <div class="card" ng-show="!list.length">
+      <div class="item item-text-wrap">
+        您还没有订单
+      </div>
     </div>
   </ion-content>
 </ion-view>

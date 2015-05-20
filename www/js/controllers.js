@@ -11,12 +11,15 @@ angular.module('drunken.controllers', [])
   function initIndex(){
     TLine.getUserLine().then(function(line){
       if(line){
+        $scope.hasLine = true;
         $scope.line = line;
         TShuttleShift.list().then(function(list){
           $scope.list = list;
         });
       }else {
         //没有符合用户的线路
+        $scope.hasLine = false;
+
       }
       
     });
@@ -86,8 +89,12 @@ angular.module('drunken.controllers', [])
 
 
 
-.controller('AccountCtrl', ['$scope', '$rootScope', 'user', function($scope, $rootScope, user) {
+.controller('AccountCtrl', ['$scope', '$rootScope', 'user', 'TTicketOrder', function($scope, $rootScope, user, TTicketOrder) {
+
+
+
   $rootScope.$on('user.login', initUserInfo);
+
   $scope.exit = function(){
   	user.exit();
   	initUserInfo();
@@ -97,6 +104,11 @@ angular.module('drunken.controllers', [])
     if($scope.isLogin){
       $scope.username = user.get('username');
       $scope.avatar = user.get('avatar') || 'img/avatar.jpg';
+      TTicketOrder.getUserLastOrder().then(function(ticketOrder){
+        $scope.ticketOrder = ticketOrder;
+      });
+    }else {
+      $scope.ticketOrder = null;
     }
   }
   initUserInfo();
@@ -131,8 +143,8 @@ angular.module('drunken.controllers', [])
     LoginService.login($scope.user.phone, $scope.user.code).then(function(user){
     	$ionicLoading.show({ template: '登录成功', noBackdrop: true, duration: 1000 });
     	$scope.user.code = '';
-    	$rootScope.$broadcast('user.login');
       if(user.attributes.homeAddr){
+        $rootScope.$broadcast('user.login');
         $state.go('tab.bbss');
       }else {
         $state.go('sign-up');
@@ -142,14 +154,16 @@ angular.module('drunken.controllers', [])
 	};
 }])
 
-.controller('SignUpCtrl', ['$scope', 'SignUpService', '$state', function($scope, SignUpService, $state){
+.controller('SignUpCtrl', ['$scope', 'SignUpService', '$state', '$rootScope', 'user', function($scope, SignUpService, $state, $rootScope, user){
   $scope.user = {};
 
 
   $scope.signUp = function(){
-    SignUpService.signUp($scope.user.home, $scope.user.company).then(function(){
+    user.saveAddr($scope.user.home, $scope.user.company).then(function(msg){
+      $rootScope.$broadcast('user.login');
       $state.go('tab.bbss');
     });
+
   };
 }])
 
@@ -163,15 +177,20 @@ angular.module('drunken.controllers', [])
 
 }])
 
-.controller('ChatRoomsCtrl', ['$scope', function($scope){
+.controller('ChatRoomsCtrl', ['$scope', 'TTicketOrder', function($scope, TTicketOrder){
   $scope.rooms = [{
     img: 'img/avatar.jpg',
     title: '群聊',
     lastWords: '大家好'
   }];
+
+  TTicketOrder.getUserLastOrder().then(function(ticketOrder){
+    $scope.ticketOrder = ticketOrder;
+  });
+
 }])
 
-.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', function($scope, imagePicker, $state, $stateParams) {
+.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', 'chat', function($scope, imagePicker, $state, $stateParams, chat) {
   //$stateParams.shuttleShift
   $scope.goIndex = function(){
     $state.go('tab.chat-rooms');
@@ -196,6 +215,11 @@ angular.module('drunken.controllers', [])
       name: 'lucy',
       img: 'img/avatar.jpg',
       isSelf: true
+    });
+    
+    chat.sendMsg($scope.content).then(function(data){
+      console.log('发送成功');
+      console.log(data);
     });
     $scope.content = '';
   };
@@ -241,7 +265,7 @@ angular.module('drunken.controllers', [])
   $scope.saveAddr = function(){
     user.saveAddr($scope.user.attributes.homeAddr, $scope.user.attributes.companyAddr).then(function(msg){
 
-    });;
+    });
   }
 }])
 
