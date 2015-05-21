@@ -128,6 +128,7 @@ angular.module('drunken.services', [])
   function getById(id){
     return _q(function(resolve, reject){
       var query = new AV.Query('T_Shuttle_Shift');
+      query.include('lineNo');
       query.get(id, {
         success: function(item){
           resolve(item);
@@ -470,7 +471,7 @@ angular.module('drunken.services', [])
 
 }])
 
-.factory('chat', ['$q', 'user', 'TChatRoom', 'TTicketOrder', function($q, user, TChatRoom, TTicketOrder){
+.factory('chat', ['$q', 'user', 'TChatRoom', 'TTicketOrder', '$rootScope', function($q, user, TChatRoom, TTicketOrder, $rootScope){
   var rt;
   var firstFlag = true;
   var conv;
@@ -508,7 +509,7 @@ angular.module('drunken.services', [])
     });
   }
 
-  function getLog(callback){
+  function getLog(){
     if(logFlag){
       return;
     }else {
@@ -522,9 +523,9 @@ angular.module('drunken.services', [])
       if(l){
         msgTime = data[0].timestamp;
       }
-      if(callback){
-        callback(data);
-      }
+      $rootScope.$broadcast('user.msglog', {
+        data: data
+      });
     });
   }
 
@@ -548,12 +549,16 @@ angular.module('drunken.services', [])
                   conv.join(function(){
 
                   });
+                  getLog();
                   conv.receive(function(data){
                     if(!msgTime){
                       msgTime = data.timestamp;
                     }
                     console.log('接收到消息');
                     console.log(data);
+                    $rootScope.$broadcast('user.msg', {
+                      data: data
+                    });
                   });
                 }else {
                   conv = rt.conv({

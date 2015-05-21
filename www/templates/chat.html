@@ -6,11 +6,11 @@
   <!-- <ion-nav-buttons side="right">
     <button class="button button-clear" on-tap="addComment()"></button>
   </ion-nav-buttons> -->
-  <ion-content class="chat has-tabs">
-    <div class="list">
-      <div class="chat-item" ng-class="res.isSelf ? 'self': ''" ng-repeat="res in results">
-        <img src="{{res.img}}">
-        <p>{{res.content}}</p>
+  <ion-content class="chat has-tabs" delegate-handle="small">
+    <div class="list" >
+      <div class="chat-item" ng-class="res.fromPeerId === userId ? 'self': ''" ng-repeat="res in results | orderBy:'timestamp'" >
+        <img src="img/avatar.jpg">
+        <p>{{res.msg.text}}</p>
       </div>
     </div>
   </ion-content>

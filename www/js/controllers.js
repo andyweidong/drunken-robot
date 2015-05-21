@@ -35,6 +35,7 @@ angular.module('drunken.controllers', [])
   });
   TShuttleShift.getById($stateParams.busId).then(function(item){
     $scope.tShuttleShift = item;
+    $scope.ticketTotal = item.attributes.lineNo.attributes.price;
   });
   $scope.user = user.current();
   $scope.add = function(index){
@@ -49,7 +50,7 @@ angular.module('drunken.controllers', [])
     $scope.breakfastTotal -= $scope.breakfasts[index].attributes.price;
   };
   $scope.breakfastTotal = 0;
-  $scope.ticketTotal = 15;
+  
 
   $scope.createOrder = function(){
     var ticketNo = $scope.tShuttleShift.attributes.shuttleSerialNo + parseInt(Math.random() * 10000);
@@ -177,7 +178,7 @@ angular.module('drunken.controllers', [])
 
 }])
 
-.controller('ChatRoomsCtrl', ['$scope', 'TTicketOrder', function($scope, TTicketOrder){
+.controller('ChatRoomsCtrl', ['$scope', 'TTicketOrder', '$rootScope', function($scope, TTicketOrder, $rootScope){
   $scope.rooms = [{
     img: 'img/avatar.jpg',
     title: '群聊',
@@ -188,33 +189,32 @@ angular.module('drunken.controllers', [])
     $scope.ticketOrder = ticketOrder;
   });
 
+  $rootScope.$on('user.msg', function(e, data){
+    var room = $scope.rooms.shift();
+    room.lastWords = data.data.msg.text;
+    $scope.rooms.unshift(room);
+  });
+
 }])
 
-.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', 'chat', function($scope, imagePicker, $state, $stateParams, chat) {
+.controller('ChatCtrl', ['$scope', 'imagePicker', '$state', '$stateParams', 'chat', '$rootScope', 'user', '$ionicScrollDelegate', function($scope, imagePicker, $state, $stateParams, chat, $rootScope, user, $ionicScrollDelegate) {
   //$stateParams.shuttleShift
+  $scope.userId = user.id();
   $scope.goIndex = function(){
     $state.go('tab.chat-rooms');
   }
-  $scope.results = [{
-    content: '你好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }, {
-    content: '我不好',
-    name: 'lucy',
-    img: 'img/avatar.jpg',
-    isSelf: false
-  }];
+  $scope.results = [];
   $scope.send = function(){
+
     if(!$scope.content){
       return;
     }
     $scope.results.push({
-      content: $scope.content,
-      name: 'lucy',
-      img: 'img/avatar.jpg',
-      isSelf: true
+      fromPeerId: $scope.userId,
+      msg: {
+        text: $scope.content
+      },
+      timestamp: Date.now()
     });
     
     chat.sendMsg($scope.content).then(function(data){
@@ -222,7 +222,18 @@ angular.module('drunken.controllers', [])
       console.log(data);
     });
     $scope.content = '';
+    $ionicScrollDelegate.$getByHandle('small').scrollBottom();
   };
+  $rootScope.$on('user.msg', function(e, data){
+    console.log('controller 接收到', data);
+    $scope.results.push(data.data);
+    $scope.$apply();
+    console.log($scope.results);
+  });
+  $rootScope.$on('user.msglog', function(e, data){
+    [].push.apply($scope.results, data.data);
+
+  });
 	$scope.selectImg = function(){
     imagePicker.getPictures({
       maximumImagesCount: 1
