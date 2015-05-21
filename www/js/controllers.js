@@ -83,7 +83,6 @@ angular.module('drunken.controllers', [])
   loadScript('http://api.map.baidu.com/api?type=quick&ak=qtwRMwRkWZ9EndLMnMpGHAWs&v=1.0').then(function(){
     var map = new BMap.Map("l-map");  
     map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
-    console.log('loaded');  
   });
 
 }])
@@ -218,21 +217,19 @@ angular.module('drunken.controllers', [])
     });
     
     chat.sendMsg($scope.content).then(function(data){
-      console.log('发送成功');
-      console.log(data);
+      
     });
     $scope.content = '';
     $ionicScrollDelegate.$getByHandle('small').scrollBottom();
   };
   $rootScope.$on('user.msg', function(e, data){
-    console.log('controller 接收到', data);
     $scope.results.push(data.data);
     $scope.$apply();
-    console.log($scope.results);
+    $ionicScrollDelegate.$getByHandle('small').scrollBottom();
   });
   $rootScope.$on('user.msglog', function(e, data){
     [].push.apply($scope.results, data.data);
-
+    $ionicScrollDelegate.$getByHandle('small').scrollBottom();
   });
 	$scope.selectImg = function(){
     imagePicker.getPictures({
@@ -289,7 +286,7 @@ angular.module('drunken.controllers', [])
 .controller('OrderListCtrl', ['$scope', 'TTicketOrder', function($scope, TTicketOrder){
   TTicketOrder.list().then(function(list){
     $scope.list = list;
-    console.log(list);
+    
   });
 }])
 
