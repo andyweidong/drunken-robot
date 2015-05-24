@@ -510,6 +510,9 @@ angular.module('drunken.services', [])
   }
 
   function getLog(){
+    if(!conv){
+      return;
+    }
     if(logFlag){
       return;
     }else {

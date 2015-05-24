@@ -231,6 +231,7 @@ angular.module('drunken.controllers', [])
     [].push.apply($scope.results, data.data);
     $ionicScrollDelegate.$getByHandle('small').scrollBottom();
   });
+  chat.getLog();
 	$scope.selectImg = function(){
     imagePicker.getPictures({
       maximumImagesCount: 1
