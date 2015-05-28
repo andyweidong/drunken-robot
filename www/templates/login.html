@@ -1,27 +1,35 @@
-<ion-view view-title="快捷登录">
+<ion-view view-title="" hide-back-button="true">
   <ion-nav-buttons side="right">
-    <a class="button button-clear" href="/#/sign-up">注册</a>
+    <!-- <a class="button button-clear" href="/#/sign-up">注册</a> -->
   </ion-nav-buttons>
   <ion-content class="padding gray-bg">
-    <div class="list">
+    <div class="list login">
       <form name="form" novalidate>
+        <div class="login-logo">
+          <img class="" src="../img/icon.png">
+        </div>
+        <div class="login-ddbcddbc">
+          <img class="" src="../img/ddbcddbc.png">
+        </div>
+
         <div class="row">
-          <div class="col col-67">
-            <input type="number" placeholder="手机号" class="input-radius" ng-model="user.phone" name="nPhone" phone>
-          </div>
-          <div class="col ">
-            <button class="button button-positive button-block" style="margin:0;padding:0;" ng-disabled="form.nPhone.$error.phone || codeDisable"  ng-bind="codeBtnText" on-tap="sendCode()"></button>
+          <div class="col bottom-color">
+            <input type="number" placeholder="请输入手机号码" class="" ng-model="user.phone" name="nPhone" phone>
           </div>
 
+
         </div>
-        <div class="row">
-          <div class="col">
-            <input type="number" placeholder="验证码" class="input-radius" ng-model="user.code" name="nCode" code>
+        <div class="row ">
+          <div class="col col-50 bottom-color">
+            <input type="number" placeholder="请输入验证码" class="" ng-model="user.code" name="nCode" code>
+          </div>
+          <div class="col bottom-color">
+            <a class="button login-send-code" ng-disabled="form.nPhone.$error.phone || codeDisable"  ng-bind="codeBtnText" on-tap="sendCode()"></a>
           </div>
         </div>
         <div class="row">
-          <div class="col">
-            <button class="button button-block button-positive" ng-disabled="!(!form.nPhone.$error.phone && !form.nCode.$error.code)" on-tap="login()">登录</button>
+          <div class="col login-btn-col">
+            <button class="button button-block button-positive login-btn" ng-disabled="!(!form.nPhone.$error.phone && !form.nCode.$error.code)" on-tap="login()">登录</button>
           </div>
         </div>
         <div class="login-explain">

@@ -1,0 +1,27 @@
+<ion-view view-title="意见与反馈" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
+  </ion-nav-buttons>
+  <ion-content class="padding gray-bg">
+    <div class="list">
+      <form name="form" novalidate>
+        <div class="row">
+          <div class="col">
+            意见与反馈：
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <textarea class="input-radius suggest-textarea" ng-model="content" name="nHome" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="button button-block button-positive" ng-disabled="form.nHome.$error.required" on-tap="send()">提交</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </ion-content>
+</ion-view>

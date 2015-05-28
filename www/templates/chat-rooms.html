@@ -1,0 +1,20 @@
+<ion-view view-title="信息" hide-back-button="true" class="rooms">
+  <ion-nav-buttons side="right" class>
+    
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list" ng-show="ticketOrder">
+      <a class="item item-avatar" href="#/chat/a" ng-repeat="room in rooms ">
+        <img src="../img/user_photo.png">
+        <h2>{{room.title}}{{room.lastTime}}</h2>
+        <p>{{room.lastWords}}</p>
+        <span class="msg-times">6</span>
+      </a>
+    </div>
+    <div class="card" ng-show="!ticketOrder">
+      <div class="item item-text-wrap">
+        订票之后才会有群
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

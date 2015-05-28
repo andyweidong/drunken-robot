@@ -1,11 +1,36 @@
-<ion-view view-title="地址设置">
+<ion-view view-title="地址设置" hide-back-button="true">
   <ion-nav-buttons side="left">
-    <button class="button button-clear" ng-click="$ionicGoBack($event)"><i class="ion-arrow-left-c"></i></button>
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button class="button button-clear" >保存</button>
+    <button class="button button-clear" ng-click="saveAddr()">保存</button>
   </ion-nav-buttons>
-  <ion-content class="padding">
-    地址设置
+  <ion-content class="padding gray-bg">
+    <div class="list">
+      <form name="form" novalidate>
+        <div class="row">
+          <div class="col">
+            所住小区地址：
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" placeholder="闵行区东川路234号" class="input-radius" ng-model="user.attributes.homeAddr" name="nHome" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            上班公司地址：
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="text" placeholder="徐汇区宜山路2612号" class="input-radius" ng-model="user.attributes.companyAddr" name="nCompany" required>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
   </ion-content>
 </ion-view>

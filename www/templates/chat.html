@@ -1,22 +1,22 @@
 <ion-view hide-back-button="true">
   <ion-nav-title>聊天</ion-nav-title>
   <ion-nav-buttons side="left">
-    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
+    <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="goIndex()"></a>
   </ion-nav-buttons>
   <!-- <ion-nav-buttons side="right">
     <button class="button button-clear" on-tap="addComment()"></button>
   </ion-nav-buttons> -->
-  <ion-content class="chat has-tabs">
-    <div class="list">
-      <div class="chat-item" ng-class="res.isSelf ? 'self': ''" ng-repeat="res in results">
-        <img src="{{res.img}}">
-        <p>Back off, man. I'm a scientist.</p>
+  <ion-content class="chat has-tabs" delegate-handle="small">
+    <div class="list" >
+      <div class="chat-item" ng-class="res.fromPeerId === userId ? 'self': ''" ng-repeat="res in results | orderBy:'timestamp'" >
+        <img src="img/avatar.jpg">
+        <p>{{res.msg.text}}</p>
       </div>
     </div>
   </ion-content>
   <div class="bar bar-footer bar-stable chat-bottom">
     <button class="button icon ion-image pull-left button-icon" on-tap="selectImg()"></button>
-    <input type="text">
-    <button class="button pull-right button-positive">发送</button>
+    <input type="text" ng-model="content">
+    <button class="button pull-right button-positive" on-tap="send()">发送</button>
   </div>
 </ion-view>

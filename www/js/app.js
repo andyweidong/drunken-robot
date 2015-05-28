@@ -1,6 +1,6 @@
-angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives'])
+angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', 'drunken.directives', 'drunken.filters'])
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform', 'user', '$state', 'chat', function($ionicPlatform, user, $state, chat) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -11,8 +11,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    if(user.isLogin()){
+      chat.init();
+      //TChatRoom.getRoomId();
+    }
   });
-})
+}])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
@@ -20,7 +24,7 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
@@ -48,12 +52,12 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
       }
     }
   })
-  .state('tab.orderlists', {
-    url: '/orderlists',
+  .state('tab.chat-rooms', {
+    url: '/chat-rooms',
     views: {
-      'tab-location': {
-        templateUrl: 'templates/tab-orderlists.html',
-        controller: 'OrderlistsCtrl'
+      'chat-rooms': {
+        templateUrl: 'templates/chat-rooms.html',
+        controller: 'ChatRoomsCtrl'
       }
     }
   })
@@ -84,11 +88,6 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
     templateUrl: 'templates/set-address.html',
     controller: 'SetAddressCtrl'
   })
-  .state('book-ticket', {
-    url: '/book-ticket',
-    templateUrl: 'templates/book-ticket.html',
-    controller: 'BookTicketCtrl'
-  })
 
   .state('set-system', {
     url: '/set-system',
@@ -103,20 +102,38 @@ angular.module('drunken', ['ionic', 'drunken.controllers', 'drunken.services', '
   })
 
   .state('chat', {
-    url: '/chat',
+    url: '/chat/:shuttleShift',
     templateUrl: 'templates/chat.html',
     controller: 'ChatCtrl'
   })
 
+  // .state('chat-rooms', {
+  //   url: '/chat-rooms',
+  //   templateUrl: 'templates/chat-rooms.html',
+  //   controller: 'ChatRoomsCtrl'
+  // })
+
   .state('pay-success', {
-    url: '/pay-success',
+    url: '/pay-success/:orderId',
     templateUrl: 'templates/pay-success.html',
     controller: 'PaySuccessCtrl'
   })
   .state('ticket-info', {
-    url: '/ticket-info',
+    url: '/ticket-info/:ticketId',
     templateUrl: 'templates/ticket-info.html',
     controller: 'TicketInfoCtrl'
+  })
+
+  .state('suggest', {
+    url: '/suggest',
+    templateUrl: 'templates/suggest.html',
+    controller: 'SuggestCtrl'
+  })
+
+  .state('order-list', {
+    url: '/order-list',
+    templateUrl: 'templates/order-list.html',
+    controller: 'OrderListCtrl'
   })
 
   ;

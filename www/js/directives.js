@@ -6,7 +6,7 @@ angular.module('drunken.directives', [])
 		require: 'ngModel',
 		link: function(scope, elm, attrs, ctrl){
 			ctrl.$validators.phone = function(modelValue, viewValue){
-				if(PHONE_REGEXP.test(modelValue)){
+				if(PHONE_REGEXP.test(viewValue)){
 					return true
 				}
 				return false;
@@ -21,7 +21,7 @@ angular.module('drunken.directives', [])
 		require: 'ngModel',
 		link: function(scope, elm, attrs, ctrl){
 			ctrl.$validators.code = function(modelValue, viewValue){
-				if(CODE_REGEXP.test(modelValue)){
+				if(CODE_REGEXP.test(viewValue)){
 					return true
 				}
 				return false;
@@ -42,6 +42,8 @@ angular.module('drunken.directives', [])
 		}
 	};
 }])
+
+
 
 
 ;
