@@ -1,26 +1,32 @@
-<ion-view view-title="我的">
+<ion-view view-title="我的" clsss="">
   <ion-content>
     <div>
     	<div ng-hide="isLogin" style="padding:20px;" class="text-center">
     		<a class="button button-small button-stable" href="#/login">点击登录</a>
     	</div>
 
-    	<div class="list" ng-hide="!isLogin">
+    	<!-- <div class="list" ng-hide="!isLogin">
     		<a class="item item-avatar" href="#">
 		      <img ng-src="{{avatar}}">
 		      <h2>{{username}}</h2>
 		      <p>15121035541</p>
 		    </a>
-    	</div>
+    	</div> -->
+      <div ng-hide="!isLogin" class="center user-info">
+        <div><img src="../img/user_photo.png"></div>
+        <p>Ansyan</p>
+      </div>
     </div>
-    <div class="card account-ticket" ng-show="ticketOrder">
+    <div class="card account-ticket user-ticket" ng-show="ticketOrder">
       <div class="item item-text-wrap">
-        <h1> 
-          车票号：<span>{{ticketOrder.attributes.ticketNo | subString:19:23}}</span>
-        </h1>
-        <p>出发时间：{{ticketOrder.attributes.tShuttleShift.attributes.departureTime | dateFormat:'MM月dd号 HH:mm'}}</p>
+        <h2> 
+          车票信息<!-- ：<span>{{ticketOrder.attributes.ticketNo | subString:19:23}}</span> -->
+        </h2>
+        <p>出发日期：{{ticketOrder.attributes.tShuttleShift.attributes.departureTime | dateFormat:'yyyy年MM月dd号'}}</p>
+        <p>出发时间：{{ticketOrder.attributes.tShuttleShift.attributes.departureTime | dateFormat:'HH:mm'}} 行程10公里</p>
         <p class="">下车地点：{{ticketOrder.attributes.tShuttleShift.attributes.fromAddr}}</p>
         <P class="">上车地点：{{ticketOrder.attributes.tShuttleShift.attributes.toAddr}}</P>
+        <p>备注：肯德基15元早餐一份</p>
       </div>
       
     </div>

@@ -7604,13 +7604,7 @@ a.button {
   transition-duration: 0s; }
 
 .gray-bg {
-  background-color: #eeebe5; }
-
-.login-explain {
-  text-align: center; }
-  .login-explain a {
-    text-decoration: none;
-    color: #f80; }
+  background-color: #fff; }
 
 .item-book {
   color: #fff; }
@@ -7724,3 +7718,155 @@ a.button {
 
 .suggest-textarea {
   height: 160px; }
+
+.bar.bar-positive {
+  background-color: #fff;
+  border-bottom: 1px solid #e6e5e2;
+  color: #000; }
+
+.tabs-positive > .tabs {
+  background-color: #fff;
+  border-top: 1px solid #e6e5e2 !important;
+  color: #000; }
+
+.bar.bar-positive .title {
+  color: #000; }
+
+.center {
+  text-align: center; }
+
+.login .bottom-color {
+  border-bottom: 1px #c08521 solid; }
+.login .login-send-code {
+  border: none;
+  background-color: #fff;
+  border-left: 1px #c08521 solid;
+  margin-left: 20px; }
+.login .row {
+  padding: 5px 11px; }
+.login .login-logo {
+  text-align: center; }
+  .login .login-logo img {
+    width: 120px;
+    height: 120px; }
+.login .login-ddbcddbc {
+  text-align: center; }
+  .login .login-ddbcddbc img {
+    width: 220px;
+    height: 49px; }
+.login .login-btn {
+  background-color: #b98124;
+  border: none;
+  border-radius: 7px; }
+.login .login-btn-col {
+  padding: 10px 0; }
+
+.sign-up input[type="text"] {
+  border: 1px solid #e6e5e2;
+  height: 36px;
+  border-radius: 5px; }
+.sign-up .login-explain {
+  text-align: center;
+  font-size: 12px; }
+  .sign-up .login-explain a {
+    text-decoration: none;
+    color: #f80; }
+.sign-up .sign-up-btn {
+  background-color: #b98124;
+  border: none;
+  border-radius: 7px; }
+
+.ddbc-ion-index-of {
+  background: url(../img/order.png); }
+
+.ddbc-ion-index-on {
+  background: url(../img/order_s.png); }
+
+.ddbc-ion-chat-of {
+  background: url(../img/chat.png); }
+
+.ddbc-ion-chat-on {
+  background: url(../img/chat_s.png); }
+
+.ddbc-ion-home-of {
+  background: url(../img/center.png); }
+
+.ddbc-ion-home-on {
+  background: url(../img/center_s.png); }
+
+.ddbc-ion-index-of, .ddbc-ion-index-on, .ddbc-ion-chat-of, .ddbc-ion-chat-on, .ddbc-ion-home-of, .ddbc-ion-home-on {
+  background-size: 27%;
+  background-position: 50% 0;
+  background-repeat: no-repeat; }
+
+.tab-item-active {
+  color: #d99841; }
+
+.index {
+  text-align: center;
+  color: #4c4b4b; }
+  .index .begin-time {
+    margin-top: 20px;
+    font-size: 16px; }
+  .index .about-time {
+    font-size: 14px;
+    color: #d99841; }
+  .index .location {
+    color: #4c4b4b; }
+    .index .location .end {
+      background: url(../img/end.png);
+      background-size: 80%;
+      background-position: 0 0;
+      background-repeat: no-repeat; }
+    .index .location i {
+      background: url(../img/start.png);
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      vertical-align: top;
+      background-size: 80%;
+      background-position: 0 0;
+      background-repeat: no-repeat; }
+  .index .logo {
+    width: 165px;
+    height: 150px; }
+  .index .off-bus {
+    margin-bottom: 10px; }
+  .index .order-btn {
+    padding: 10px; }
+    .index .order-btn a {
+      background-color: #b98124;
+      border: none;
+      border-radius: 7px; }
+
+.rooms .item-avatar {
+  position: relative; }
+  .rooms .item-avatar .msg-times {
+    position: absolute;
+    top: 40%;
+    right: 20px;
+    color: #d99841;
+    border: 1px solid #d99841;
+    border-radius: 50%;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px; }
+  .rooms .item-avatar img {
+    top: 10px;
+    left: 10px;
+    max-width: 55px;
+    max-height: 55px; }
+
+.user-info {
+  margin-top: 10px; }
+  .user-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; }
+  .user-info p {
+    font-size: 16px; }
+
+.user-ticket h2 {
+  font-size: 18px; }

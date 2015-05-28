@@ -1,25 +1,24 @@
-<ion-view view-title="大大班车" hide-back-button="true">
+<ion-view view-title="上班订票" hide-back-button="true" class="index">
   <ion-nav-buttons side="right" class="">
     
   </ion-nav-buttons>
-  <ion-content class="gray-bg" scroll="false">
-    <div class="card card-book" ng-show="hasLine">
-      <h3 class="item">上班订票</h3>
-      <div class="item">
-        <p class="">出发日期：{{list[0].attributes.departureTime | dateFormat:'MM月dd日'}}</p>
-        <p class="">上车地点：{{user.attributes.homeAddr}}</p>
-        <P class="">上车地点：{{user.attributes.companyAddr}}</P>
-        <P class="">订票截止时间: 02：00</P>
-      </div>
-      
+  <ion-content class="gray-bg" scroll="true">
+    <p class="begin-time">出发日期：{{list[0].attributes.departureTime | dateFormat:'yyyy年MM月dd日 HH:mm'}}</p>
+    <p class="about-time">行程25公里 大约需要25分钟</p>
+    <h2 class="location"><i class="start"></i>徐家汇地铁站</h2>
+    <p class="on-bus">上车地点：{{user.attributes.homeAddr}}</p>
+    <div class="">
+      <img class="logo" src="../img/change_start_end.png">
     </div>
+    <h2 class="location"><i class="end"></i>紫竹科技园</h2>
+    <P class="off-bus">下车地点：{{user.attributes.companyAddr}}</P>
+    <div class="order-btn">
+      <a class="button button-block button-positive sign-up-btn"  href="">立即订票（￥15元）</a>
+    </div>
+    <p class="last-time">订票截止时间：2015年6月6号 02：00</p>
 
-    <div class="list" ng-show="hasLine">
-      <a class="item item-book" href="#/order-confirm/{{item.id}}" ng-repeat="item in list">
-        <p><span>{{item.attributes.departureTime | dateFormat:'HH:mm'}}出发</span><span class="price">{{line.attributes.price}}￥</span></p>
-        <p><span>预计{{item.attributes.arrivalTime | dateFormat:'HH:mm'}}到达</span><button class="button button-small button-positive button-book">订票</button></p>
-      </a>
-    </div>
+
+
     <div class="card card-book" ng-show="!hasLine">
       <h3 class="item">没有适合您的线路</h3>
       <div class="item">

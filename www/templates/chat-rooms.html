@@ -1,13 +1,14 @@
-<ion-view view-title="聊天" hide-back-button="true">
+<ion-view view-title="信息" hide-back-button="true" class="rooms">
   <ion-nav-buttons side="right" class>
     
   </ion-nav-buttons>
   <ion-content>
     <div class="list" ng-show="ticketOrder">
       <a class="item item-avatar" href="#/chat/a" ng-repeat="room in rooms ">
-        <img ng-src="{{room.img}}">
+        <img src="../img/user_photo.png">
         <h2>{{room.title}}{{room.lastTime}}</h2>
         <p>{{room.lastWords}}</p>
+        <span class="msg-times">6</span>
       </a>
     </div>
     <div class="card" ng-show="!ticketOrder">
