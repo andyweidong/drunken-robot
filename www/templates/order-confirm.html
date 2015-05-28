@@ -1,4 +1,4 @@
-<ion-view view-title="确认支付">
+<ion-view view-title="确认支付" class="index order-confirm">
   <ion-nav-buttons side="left">
     <a class="button button-icon icon ion-ios-arrow-thin-left" ng-click="$ionicGoBack($event)"></a>
   </ion-nav-buttons>
@@ -7,26 +7,25 @@
   </ion-nav-buttons>
   <ion-content class="scroll has-tabs">
     <div class="card">
-      <div class="item item-divider">
-        车票信息:
-      </div>
+      <div class="item item-divider text-left pane-title">车票信息:</div>
       <div class="item item-text-wrap">
         <p class="">出发时间：{{tShuttleShift.attributes.departureTime | dateFormat:'MM月dd号 HH:mm'}}</p>
         <p class="">下车地点：{{user.attributes.homeAddr}}</p>
         <P class="">上车地点：{{user.attributes.companyAddr}}</P>
       </div>
-      <div class="item item-divider text-right">
+      <div class="item item-divider text-right pane-bottom">
         应付：<span class="price">￥{{ticketTotal}}</span>
       </div>
     </div>
     <div class="card">
-      <div class="item item-divider">早餐预定</div>
+      <div class="item item-divider text-left pane-title">早餐预定</div>
       <div class="item item-text-wrap breakfast">
         <div class="list ">
           <div class="item item-avatar" ng-repeat="breakfast in breakfasts">
             <img src="img/kfc.png">
             <h2>{{breakfast.attributes.breakfastName}}</h2>
-            <p class="quantity">
+            <p class="bf-item-desc">{{breakfast.attributes.desc}}</p>
+            <p class="bf-item-sel quantity">
               <a ng-click="minu($index)" ng-class="breakfast.attributes.count === 0 ? 'disable': ''">-</a>
               <input type="text" ng-model="breakfast.attributes.count" disabled>
               <a ng-click="add($index)">+</a>
@@ -34,12 +33,12 @@
           </div>
         </div>
       </div>
-      <div class="item item-divider text-right">
+      <div class="item item-divider text-right pane-bottom">
         应付：<span class="price">￥{{breakfastTotal}}</span>
       </div>
     </div>
     <div class="card">
-      <div class="item item-divider">支付方式</div>
+      <div class="item item-divider text-left pane-title">支付方式</div>
       <div class="item item-text-wrap">
         <div class="list">
           <label class="item item-radio pay-item">
@@ -47,23 +46,23 @@
             <div class="item-content">
               <img class="pay-icon" src="/img/zhifubao.png">支付宝
             </div>
-            <i class="radio-icon ion-checkmark"></i>
+            <i class="radio-icon ion-checkmark ion-android-radio-button-off"></i>
           </label>
           <label class="item item-radio pay-item">
             <input type="radio" name="group">
             <div class="item-content">
-              <img class="pay-icon" src="/img/weixin.png">weixin
+              <img class="pay-icon" src="/img/weixin.png">微信
             </div>
-            <i class="radio-icon ion-checkmark"></i>
+            <i class="radio-icon ion-checkmark ion-android-radio-button-on"></i>
           </label>
         </div>
       </div>
+      <div class="item item-divider total-price text-right pane-bottom">
+        	共应付：<span class="price">￥{{ticketTotal + breakfastTotal}}</span>
+      </div>
     </div>
-    <p class="total-price text-center">
-      总计：<span class="price">￥{{ticketTotal + breakfastTotal}}</span>
-    </p>
+    <div class="order-btn">
+      <a class="button button-block button-positive sign-up-btn" ng-click="createOrder()">确认支付</a>
+    </div>
   </ion-content>
-  <div class="bar bar-footer pay-bar">
-    <button class="button button-block button-positive" ng-click="createOrder()">确认支付</button>
-  </div>
 </ion-view>

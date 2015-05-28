@@ -1,5 +1,7 @@
 /* Empty. Add your own CSS if you like */
-
+body {
+	font-size: 14px;
+}
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{
 	padding: 10px;
 	font-size: 16px;
@@ -49,5 +51,49 @@ input.input-radius {
 .jssora21l.jssora21ldn { background-position: -243px -33px; }
 .jssora21r.jssora21rdn { background-position: -303px -33px; }
 
-
-
+.order-confirm {}
+.order-confirm .card { margin: 0; }
+.order-confirm .item { font-size: 14px; }
+.order-confirm .item p { font-size: 12px; text-align: left; padding: 3px 16px; }
+.order-confirm .pane-title { border-bottom-width: 0;border-top: 0px solid #ddd; background: transparent; }
+.order-confirm .pane-bottom { background: transparent; font-size: 12px; }
+.order-confirm .item-avatar { 
+  border-top-width: 0;
+  border-bottom-color: #efefef;
+  padding-left: 65px;
+  padding-right: 88px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  min-height: inherit;
+}
+.order-confirm .item-avatar > img:first-child {
+	top: 10px;
+}
+.order-confirm .item-avatar h2 {   
+	text-align: left;
+  	font-size: 12px;
+}
+.order-confirm .item-avatar .bf-item-desc {   
+	padding: 0;
+}
+.order-confirm .item-avatar .bf-item-sel {   
+	display: inline-block;
+  	padding: 0;
+  	position: absolute;
+  	right: 16px;
+  	top: 26px;
+}
+.order-confirm .item-avatar .bf-item-sel a {   
+	border: 0;
+  	font-size: 22px;
+  	padding: 0 5px;
+}
+.order-confirm .item-avatar .bf-item-sel input {   
+	border-radius: 20px;
+  	width: 30px;
+  	margin-left: 3px;
+  	background: transparent;
+  	border: 1px solid #ddd;
+}
+.order-confirm .item-text-wrap { padding: 0; }
+.order-confirm .item .item-content { text-align: left; }
